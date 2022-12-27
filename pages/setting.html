@@ -1,0 +1,545 @@
+<script>
+
+  /**
+   * tableInfo = {
+   * columnDefs:[{
+   *      colText:"",
+   *      width:"",
+   *      filter:"true"
+   *      resizable:true;
+   *      textAlign:""
+   *  }],
+   * headerTextAlignment:'center',
+   * filterAllCols:true
+   * 
+   * * }
+  */
+  function SPT__table(tableInfo){
+    this.tableInfo = tableInfo;
+    this.mainSetup = () =>{
+      this.tableWrapper =  document.querySelector(this.tableInfo.tableDiv);
+      this.tableWrapper.classList.add('spt-table');
+      this.createTableSctructure();
+      this.renderTableHead();
+      this.addFilterInfoBox();
+      this.renderTableRow(this.tableInfo.rowData);
+    }
+
+    this.createTableSctructure = () =>{
+      this.table = document.createElement('table');
+      this.table.className = 'table table-bordered';
+      this.thead = document.createElement('thead');
+      this.tbody = document.createElement('tbody');
+
+      this.table.append(this.thead,this.tbody);
+      this.tableWrapper.append(this.table);
+    }
+
+    this.renderTableHead = () =>{
+      var tr = document.createElement('tr');
+
+      tableInfo.columnDefs.forEach(coldef => {
+        var th = document.createElement('th');
+        var cellWrapper = document.createElement('div');
+            cellWrapper.textContent = coldef.colText; 
+            th.append(cellWrapper);
+            tr.append(th);
+
+            if(coldef.filter) {
+              th.insertAdjacentElement('afterbegin',this.renderFilterInput(coldef.colId,coldef.colText));
+              th.classList.add('filer-column')
+            }
+            if(coldef.width) th.style.width =  coldef.width+"px";
+            if(coldef.textAlign) this.manageAlignment(coldef.textAlign,th);
+            if(coldef.resizable === true) th.classList.add('resizable')
+      });
+
+      if(tableInfo.headerTextAlignment) this.manageAlignment(tableInfo.headerTextAlignment,this.thead);
+
+      this.thead.append(tr);
+    }
+
+    this.renderTableRow = (tabledata) =>{
+      var tableBody   = this.table.tBodies[0];
+      var rowTemplate = document.querySelector(this.tableInfo.rowTemplate);
+
+      tableBody.innerHTML = '';
+
+      tabledata.forEach(data => {
+        var row = rowTemplate.content.cloneNode(true);
+            row = row.querySelector('tr');
+
+        var cells = row.querySelectorAll('td'); 
+
+          tableBody.append(row);
+
+          if(this.tableInfo.rowLogic) this.tableInfo.rowLogic(row,cells,data);
+      });
+
+      }
+
+    // Manage Data Filter
+    this.renderFilterInput = (colId,colText) =>{
+      var filterWrapper = document.createElement('div'); 
+          filterWrapper.innerHTML = `<div class="icon"><i class="fa-solid fa-filter"></i></div> 
+            <input type="hidden" class="filter-input" placeholder="filter">`;
+      var filterIcon = filterWrapper.querySelector('.icon');
+      var filterInput = filterWrapper.querySelector('.filter-input');
+
+      filterIcon.addEventListener('click',()=>{
+        if(filterInput.type === 'hidden') {
+          filterInput.type = 'text';
+          filterInput.focus();
+        }
+        else filterInput.type = 'hidden';
+      });
+
+      filterInput.addEventListener('blur',()=>{
+        filterInput.type =  'hidden';
+        if(filterInput.value !=='')
+        this.renderChoosedFilter(colId,colText,filterInput.value)
+        filterInput.value = '';
+        
+      })
+
+      return filterWrapper;
+    }
+
+    this.addFilterInfoBox = () =>{
+
+      this.filterBox =`
+        <div class="spt-all-filters">
+          <div class="heading">
+            <span class="icon"><i class="fa-sharp fa-solid fa-filter"></i></span>
+            <span class="text">Filters:</span>
+          </div>
+        </div>`;
+   
+      if(tableInfo.filterAllCols || (tableInfo.columnDefs.filter(defs=> defs.filter === true)).length !== 0){
+        this.tableWrapper.insertAdjacentHTML('beforebegin',this.filterBox)
+      }
+    }
+    
+    this.renderChoosedFilter = (colId,colText,searchText) =>{
+      var allFiltersWrapper =  document.querySelector('.spt-all-filters');
+      var html = this.filterInfoCreatore(colId,colText,searchText);
+      var choosedFilter = Array.from(allFiltersWrapper.querySelectorAll('.choosed-filter'));
+      var checkCurrentFilter = choosedFilter.find(filter=>filter.dataset.filterid === colId);
+
+      if(checkCurrentFilter){
+        var search = checkCurrentFilter.querySelector('.search');
+            search.textContent = `="${searchText}"`;
+      }else{
+        allFiltersWrapper.insertAdjacentElement('beforeend',html)
+      }
+      this.loadFilterdData();
+    }
+
+    this.filterInfoCreatore = (colId,colText,searchText) =>{
+      var div = document.createElement('div');
+
+        div.classList.add('choosed-filter');
+        div.dataset.filterid   = colId;
+        div.dataset.searchtext = searchText;
+
+        div.innerHTML = `<span class="colname">${colText}</span><span class="search">="${searchText}"</span><span class="remove"><i class="fa-sharp fa-solid fa-xmark"></i></span>`;
+
+        div.querySelector('.remove').addEventListener('click',()=>{
+          div.remove();
+          this.loadFilterdData();
+          console.log(this.tableWrapper.previousElementSibling);
+          if(this.tableWrapper.previousElementSibling.querySelectorAll('.choosed-filter').length === 0 ) this.renderTableRow(this.tableInfo.rowData);
+        })
+
+        return div
+    }
+
+    this.loadFilterdData = () =>{
+      var choosedFilters = document.querySelectorAll('.choosed-filter');
+      var filterCriterea = {}
+
+      if(choosedFilters.length){
+        choosedFilters.forEach(log=>{
+          filterCriterea[log.dataset.filterid] = log.dataset.searchtext; 
+        });
+      }
+
+      var tempData = [];
+      console.log(this.tableInfo.rowData);
+      for(let key in filterCriterea){
+        if(tempData.length){
+          tempData = tempData.filter(data => data[key].toLowerCase().includes(filterCriterea[key].toLowerCase()))
+        }else{
+          tempData = this.tableInfo.rowData.filter(data => data[key].toLowerCase().includes(filterCriterea[key].toLowerCase()))
+        }
+      }
+
+      this.renderTableRow(tempData);
+      console.log(tempData);
+    }
+    // End Filter
+
+    // Utils
+    this.manageAlignment = (alimentPropName,affectedEl) =>{
+      if(alimentPropName === 'center') affectedEl.classList.add('text-center');
+      else if(alimentPropName === 'right') affectedEl.style.textAlign = 'right';
+      else affectedEl.classList.add('text-left');
+    }
+
+    this.mainSetup();
+  }
+
+
+function rowLogic (row,cells,data){
+
+    for(let cell of cells){
+      var cellInfo = cell.dataset.key;
+
+      if(cellInfo === 'EDIT') {
+        cell.addEventListener('click',()=>this.openPopup(data))
+        continue;
+      };
+
+      if(cellInfo === 'STAT' && data.STAT === 'A'){
+        cell.classList.add('green-status');
+        continue;
+      }
+
+      cell.textContent = data[cellInfo]
+    }
+
+}
+
+
+
+
+
+  new SPT__table({
+    tableDiv:"#designation",
+    rowData:[
+    {
+        "STAT": "A",
+        "UND_DSGID": 0,
+        "DSG_CODE": "0.",
+        "DSG_LVL": 1,
+        "DSGID": 1,
+        "DSG_DETAIL": "project manager",
+        "DSG_NM": "project manager",
+        "UND_DSGNM": ""
+    },
+    {
+        "STAT": "A",
+        "UND_DSGID": 1,
+        "DSG_CODE": "0.1.",
+        "DSG_LVL": 1,
+        "DSGID": 2,
+        "DSG_DETAIL": "Frontend Developer",
+        "DSG_NM": "Frontend Developer",
+        "UND_DSGNM": "project manager"
+    },
+    {
+        "STAT": "A",
+        "UND_DSGID": 1,
+        "DSG_CODE": "0.1.",
+        "DSG_LVL": 1,
+        "DSGID": 3,
+        "DSG_DETAIL": "Backend Developer",
+        "DSG_NM": "Backend Developer",
+        "UND_DSGNM": "project manager"
+    },
+    {
+        "STAT": "A",
+        "UND_DSGID": 3,
+        "DSG_CODE": "0.1.3.",
+        "DSG_LVL": 1,
+        "DSGID": 4,
+        "DSG_DETAIL": "Java Developer",
+        "DSG_NM": "Java Developer",
+        "UND_DSGNM": "Backend Developer"
+    },
+    {
+        "STAT": "A",
+        "UND_DSGID": 2,
+        "DSG_CODE": "0.",
+        "DSG_LVL": 1,
+        "DSGID": 5,
+        "DSG_DETAIL": "Angular Developer",
+        "DSG_NM": "Angular Developer",
+        "UND_DSGNM": "Frontend Developer"
+    },
+    {
+        "STAT": "A",
+        "UND_DSGID": 3,
+        "DSG_CODE": "0.1.3.",
+        "DSG_LVL": 1,
+        "DSGID": 6,
+        "DSG_DETAIL": "Node Js Developer",
+        "DSG_NM": "Node Js Developer",
+        "UND_DSGNM": "Backend Developer"
+    }
+],
+    columnDefs:[
+    {
+     colText:"Act",
+     colId:'EDIT',
+     width:"30",
+     resizable:true,
+     textAlign:"center"
+    },
+    {
+     colText:"Designation Name",
+     colId:'DSG_NM',
+     width:"200",
+     filter:true,
+     resizable:true
+    },
+    {
+     colText:"Under Designation",
+     colId:'UND_DSGNM',
+     width:"200",
+     resizable:true,
+     filter:true,
+    },
+    {
+     colText:"Details",
+     colId:'DSG_DETAIL',
+     filter:true,
+    },
+    {
+     colText:"Designation Code",
+     colId:'DSG_CODE',
+     width:"150",
+     resizable:true,
+     filter:true,
+    },
+    {
+     colText:"Status",
+     colId:'STAT',
+     width:"30",
+     resizable:true
+    },
+  ],
+    rowLogic:rowLogic,
+    rowTemplate:"#desg-table-row",
+  // headerTextAlignment:"center",
+  // filterAllCols:true
+  });
+
+
+
+</script>
+
+
+
+<style>
+.spt-table{
+    position: relative;
+    min-height: 100px !important;
+    overflow-y: scroll;
+    background-color: var(--table-background);
+    border: 1px solid var(--table_border) !important;
+    width: 99.9%;
+    margin: auto;
+}
+
+/* width */
+.spt-table::-webkit-scrollbar {
+    width: 2px;
+}
+
+/* Track */
+.spt-table::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+ 
+/* Handle */
+.spt-table::-webkit-scrollbar-thumb {
+    background: var(--blue); 
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.spt-table::-webkit-scrollbar-thumb:hover {
+    background: #b30000; 
+}
+
+.spt-all-filters{
+  background-color: rgb(210, 210, 235);
+}
+
+.spt-all-filters .heading{
+  font-size: 17px;
+}
+
+.spt-all-filters div{
+  display: inline;
+}
+
+.spt-all-filters .choosed-filter{
+  margin: 0px 5px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 0px 1px 0px 1px;
+  position: relative;
+
+}
+
+.spt-all-filters .choosed-filter .colname{
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(53, 53, 240);
+}
+
+.spt-all-filters .choosed-filter .search{
+  font-size: 14px;
+
+}
+
+.spt-all-filters .choosed-filter  .remove{
+  cursor: pointer;
+}
+
+.spt-all-filters .choosed-filter  .remove:hover{
+  color: rgb(53, 53, 240);
+}
+
+.spt-table table{
+    background-color: var(--table-background);
+    border-radius: 5px;
+    
+}
+
+.spt-table table thead{
+  font-size: 12px;
+  padding: 0;
+  font-weight: normal !important;
+  background-color: var(--thead_background);
+  color: var(--thead_text);
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.spt-table table thead .resizable {
+    /* border: 2px solid; */
+  /* padding: 20px; 
+  width: 300px; */
+  resize: horizontal;
+  overflow: hidden;
+    cursor: col-resize;
+    
+} 
+
+.spt-table table th{
+    width: auto;
+}
+
+.spt-table table tbody td{
+    padding: 0 !important;
+}
+
+.spt-table table tbody{
+  text-align: center;
+  padding: 0;
+  font-size: 11px !important;
+  font-weight: 500;
+}
+
+.filer-column {
+  position: relative;
+}
+
+.filer-column .icon{
+  cursor: pointer;
+  color: rgb(85, 52, 52);
+}
+
+.filer-column .filter-input{
+  position: absolute !important;
+  /* margin-top:  -10px !important; */
+  border:none;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: rgb(240, 235, 235);
+  /* font-size: 7px; */
+}
+
+/* Extra Classess */
+.spt-table table .edit{
+  cursor: pointer;
+  font-weight: 1000;
+  color: rgba(0,0,0,.6);
+  font-size: 15px;
+  opacity: 0.8;
+  transform: linear 0.5s;
+}
+
+.spt-table  .filer-column div{
+  display: inline;
+}
+
+.spt-table table .edit:hover{
+  opacity: 1;
+  color: var(--darkBlue);
+}
+
+.status{
+  transform: linear 0.5s;
+}
+
+.green-status{
+  color: #379237;
+}
+</style>
+
+<div class="setting-page">
+
+    <div class="row header" style="width:100%">
+        <div class="col-5 m-auto">
+          <h4 class="text-center">
+            <span class="heading"><strong>Setting</strong></span>
+            <span class="icon">
+              <i class="fa-solid fa-gear"></i>
+            </span>
+          </h4>
+          <hr>
+        </div>
+    </div>
+
+
+    <!-- <div class="spt-all-filters">
+      <div class="heading">
+        <span class="icon"><i class="fa-sharp fa-solid fa-filter"></i></span>
+        <span class="text">Filters:</span>
+      </div>
+      <div class="choosed-filter">
+        <span class="colname">Designation Name</span>
+        <span class="search">="Officer"</span>
+        <span class="remove"><i class="fa-sharp fa-solid fa-xmark"></i></span>
+      </div>
+      <div class="choosed-filter">
+        <span class="colname">Under Designation</span>
+        <span class="search">="Main Authority"</span>
+        <span class="remove"><i class="fa-sharp fa-solid fa-xmark"></i></span>
+      </div>
+      <div class="choosed-filter">
+        <span class="colname">Details</span>
+        <span class="search">="Details"</span>
+        <span class="remove"><i class="fa-sharp fa-solid fa-xmark"></i></span>
+      </div>
+    </div> -->
+    <div id="designation"></div>
+  
+</div>
+
+<template id="desg-table-row">
+  <tr>
+    <td data-key="EDIT" class="edit" ><i class="fa-solid fa-pen-to-square"></i></td>
+    <td data-key="DSG_NM" class="desg-name"></td>
+    <td data-key="UND_DSGNM" class="und-desg"></td>
+    <td data-key="DSG_DETAIL"></td>
+    <td data-key="DSG_CODE"></td>
+    <td data-key="STAT" class="status"><i class="fa-solid fa-circle"></i></td>
+  </tr>
+</template>

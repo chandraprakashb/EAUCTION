@@ -1,0 +1,966 @@
+<script>
+  function UserManage(){
+    
+    this.mainSetup = () => {
+      renderOptions.getDesignations("#select-designation");
+      renderOptions.getOffices('#select-office');
+      renderOptions.getUserRole('#roles');
+      this.manageInteractivity();
+      addFormValidations('create-user-form',this.createNewUser);
+      addFormValidations('update-user',this.updateUsers);
+      this.userInfoModal =  new Modal({selector:".create-user-popup",wrapperCss:"width:55%;margin-top:30px;"});
+      this.getCreatedUser();
+    };
+    
+    this.manageInteractivity = () =>{
+      var btnView     = document.querySelector('#btns-wrapper');
+      var viewBtns    = document.querySelectorAll('.view-btn');
+      var viewPages   = Array.from(document.querySelectorAll('.view-page'));
+      var backBtns    = document.querySelectorAll('.back-btn');
+
+      FadeOut(...viewPages);
+
+      viewBtns.forEach((viewBtn)=>{
+        viewBtn.addEventListener('click',()=>{
+          FadeOut(...viewPages,btnView);
+          FadeIn(viewPages.find(page => page.dataset.view ===viewBtn.dataset.view));
+        })
+      })
+
+      backBtns.forEach((backBtn)=>{
+        backBtn.addEventListener('click',()=>{
+        FadeOut(...viewPages);
+        FadeIn(btnView);
+      })
+      });
+
+      viewBtns[0].click()
+
+    }
+
+    this.getCreatedUser = async() =>{ 
+        const reqData = new FormData();
+            reqData.append('act','srch');
+        //     let tableData = await sendHttpRequest('eaucnmanage/manageusers',reqData);
+        // console.log(tableData.Records);
+        // if(tableData.Records){
+        //   renderTableRow('#user-table',"#user-table-row",tableData.Records,this.rowLogic);
+        // }else{
+          
+        // }
+        renderTableRow('#user-table',"#user-table-row", [
+  {
+    "USR_ROLID": 0,
+    "USR_LNM": "Babbage",
+    "USR_ADR": "London, United Kingdom",
+    "USR_NM": "Charles  Babbage",
+    "CLNT_ID": 100,
+    "USR_DTL2": "Originated the concept of a digital computer.",
+    "USR_DTL1": "Originated the concept of a digital computer.",
+    "ENTRDON": "2022-06-17 09:01:45",
+    "UID": 10,
+    "USR_DSGID": 0,
+    "STAT": "A",
+    "USR_OFCID": 1,
+    "USR_IDNO": "143968",
+    "USR_CNTC": "9081536273",
+    "USR_ROLE": "STAD",
+    "USR_LOGIN": "charles",
+    "USR_FNM": "Charles ",
+    "DSG_NM": null,
+    "USR_EML": "bagdeankit34@gmail.com",
+    "OFC_NM": "Pune"
+  },
+  {
+    "USR_ROLID": 0,
+    "USR_LNM": "Tyagi",
+    "USR_ADR": "Address",
+    "USR_NM": "Rahul Tyagi",
+    "CLNT_ID": 100,
+    "USR_DTL2": "Indian Ethical Hacker",
+    "USR_DTL1": "Indian Ethical Hacker",
+    "ENTRDON": "2022-06-20 12:15:41",
+    "UID": 11,
+    "USR_DSGID": 0,
+    "STAT": "A",
+    "USR_OFCID": 0,
+    "USR_IDNO": "8888",
+    "USR_CNTC": "9081673546",
+    "USR_ROLE": "STAD",
+    "USR_LOGIN": "rahultyagi",
+    "USR_FNM": "Rahul",
+    "DSG_NM": null,
+    "USR_EML": "bagdeankit34@gmail.com",
+    "OFC_NM": null
+  },
+  {
+    "USR_ROLID": 50,
+    "USR_LNM": "Maheshwari",
+    "USR_ADR": "Noida",
+    "USR_NM": "Sandeep  Maheshwari",
+    "CLNT_ID": 100,
+    "USR_DTL2": "Motivational Speaker",
+    "USR_DTL1": "Youtuber",
+    "ENTRDON": "2022-07-23 12:21:52",
+    "UID": 23,
+    "USR_DSGID": 1,
+    "STAT": "A",
+    "USR_OFCID": 1,
+    "USR_IDNO": "sandeep000",
+    "USR_CNTC": "9359593395",
+    "USR_ROLE": "APUR",
+    "USR_LOGIN": "sandeep000",
+    "USR_FNM": "Sandeep ",
+    "DSG_NM": "project manager",
+    "USR_EML": "bagdeankit34@gmail.com",
+    "OFC_NM": "Pune"
+  },
+  {
+    "USR_ROLID": 0,
+    "USR_LNM": "1",
+    "USR_ADR": "1",
+    "USR_NM": "q 1",
+    "CLNT_ID": 100,
+    "USR_DTL2": "1",
+    "USR_DTL1": "1",
+    "ENTRDON": "2022-12-12 08:08:54",
+    "UID": 31,
+    "USR_DSGID": 0,
+    "STAT": "A",
+    "USR_OFCID": 0,
+    "USR_IDNO": "1",
+    "USR_CNTC": "1",
+    "USR_ROLE": "APUR",
+    "USR_LOGIN": "1",
+    "USR_FNM": "q",
+    "DSG_NM": null,
+    "USR_EML": "1",
+    "OFC_NM": null
+  },
+  {
+    "USR_ROLID": 0,
+    "USR_LNM": "",
+    "USR_ADR": "",
+    "USR_NM": " ",
+    "CLNT_ID": 100,
+    "USR_DTL2": "",
+    "USR_DTL1": "",
+    "ENTRDON": "2022-12-23 13:20:57",
+    "UID": 32,
+    "USR_DSGID": 0,
+    "STAT": "A",
+    "USR_OFCID": 0,
+    "USR_IDNO": "",
+    "USR_CNTC": "",
+    "USR_ROLE": "APUR",
+    "USR_LOGIN": "",
+    "USR_FNM": "",
+    "DSG_NM": null,
+    "USR_EML": "",
+    "OFC_NM": null
+  }
+],this.rowLogic)
+
+      
+
+    }
+
+    this.createNewUser = async () =>{
+      let userData = new FormData(document.getElementById('create-user-form'));
+        userData.append('act','savesiteuser');
+
+        if(containsWhitespace($(".usr_login").val())){
+            Alert('error','Invalid Login Id !',"Please Enter Login ID without space !");
+            return;
+        }else{
+            await  sendHttpRequest('eaucnmanage/manageusers',userData);
+            this.getCreatedUser();
+        }
+    }
+    
+    this.updateUsers = async () =>{
+      let userData = new FormData(document.getElementById('update-user'));
+        userData.append('act','updtsiteuser');
+
+        await  sendHttpRequest('eaucnmanage/manageusers',userData);
+        this.getCreatedUser();
+    }
+
+    this.rowLogic = (row,cells,data) =>{
+
+    for(let cell of cells){
+      var cellInfo = cell.dataset.key;
+
+      if(cellInfo === 'EDIT') {
+        cell.addEventListener('click',()=>this.openUserInoPopup(data))
+        continue;
+      };
+
+      if(cellInfo === 'STAT' && data.STAT === 'A'){
+        cell.classList.add('green-status');
+        continue;
+      }
+
+      cell.textContent = data[cellInfo]
+    }
+
+    }
+
+    this.openUserInoPopup = (formData) =>{
+      this.userInfoModal.showModal();
+      formDataFiller("#update-user",formData)
+      console.log(formData);
+    }
+
+    this.mainSetup();
+  }
+
+
+  new UserManage();
+</script>
+
+<style>
+  #btns-wrapper{
+    width: 100%;
+    height: 74.8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .wrapper-div{
+    width: 38%;
+    /* background-color: red; */
+    text-align: center;
+  }
+
+  .box-wrapper{
+    margin-bottom: 23px;
+    /* border: 2px solid black; */
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background:transparent;
+    -webkit-box-shadow: 0px 2px 5px 3px rgba(207,205,207,1);
+    -moz-box-shadow: 0px 2px 5px 3px rgba(207,205,207,1);
+    box-shadow: 0px 2px 5px 3px rgba(207,205,207,1);
+    transition: .6s linear;
+    border-radius: 5px;
+  }
+
+  .box-wrapper .icon{
+      margin: auto;
+      width: 35%;
+      font-size: 60px;
+      margin-bottom: 6px;
+      color: rgb(18, 18, 255);
+  }
+
+  .box-wrapper .heading{
+    margin-bottom: 8px;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .box-wrapper:hover{
+    background-color: var(--blue);
+    color: var(--light_blue) !important;
+    -webkit-box-shadow: 0px 2px 19px 9px rgba(207,205,207,1);
+    -moz-box-shadow: 0px 2px 19px 9px rgba(207,205,207,1);
+    box-shadow: 0px 2px 19px 9px rgba(207,205,207,1);
+  }
+
+  .box-wrapper:hover .icon{
+    color: var(--light_blue) !important;
+  }
+
+  .main-heading{
+    text-transform: capitalize;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: 700;
+    font-size: 21px;
+    -webkit-box-shadow: -1px 4px 19px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 4px 19px -3px rgba(0,0,0,0.75);
+    box-shadow: -1px 4px 19px -3px rgba(0,0,0,0.75);
+    margin-top: 5px;
+    z-index: 10;
+    color: var(--blue);
+  }
+
+  .form-wrapper{
+    -webkit-box-shadow: 0px 4px 23px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 23px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 23px -6px rgba(0,0,0,0.75);
+    border-radius: 5px;
+    padding: 5px;
+    padding-bottom: 0px;
+    background-color: #f5f8ff
+  }
+
+  .name,.contact{
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .created-on{
+    background-color: #d5e5ff !important;
+  }
+
+  #change-password{
+    -webkit-box-shadow: 0px 4px 23px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 23px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 23px -6px rgba(0,0,0,0.75);
+  }
+
+  #screens{
+    font-size: 12px;
+    font-weight: 600;
+    padding-left: 4px;
+  }
+</style>
+
+<div class="usermnage-page">
+
+    <div class="row header" style="width:100%">
+        <div class="col-5 m-auto">
+          <h4 class="text-center">
+            <span class="heading"><strong>Users</strong></span>
+            <span class="icon">
+              <i class="fa-solid fa-users"></i>
+            </span>
+          </h4>
+
+          <hr>
+        </div>
+    </div>
+
+    <div id="btns-wrapper">
+            <div class="wrapper-div" >
+              <div class="row">
+                <div class="col-6">
+                    <div class="box-wrapper view-btn" data-view="all-users">
+                      <div class="icon"><i class="fa-solid fa-users"></i></div>
+                      <div class="heading">All Users</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="box-wrapper view-btn" data-view="create-user">
+                      <div class="icon"><i class="fa-solid fa-user-plus"></i></div>
+                      <div class="heading">Create Users</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="box-wrapper view-btn" data-view="all-roles">
+                      <div class="icon"><i class="fa-solid fa-users-line"></i></div>
+                      <div class="heading">All Roles</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="box-wrapper view-btn" data-view="new-role">
+                      <div class="icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                      <div class="heading">New Role</div>
+                    </div>
+                </div>
+              </div>
+            </div>
+    </div>
+
+    <section class="all-users view-page mt-1" data-view="all-users">
+      <div class="row" style="width: 100%;">
+        <div class="col-5">          
+          <h6><u>All Created Users:</u></h6>
+        </div>
+        <div class="col-7" style="text-align: right;">
+          <button class="custome-icon-btn-primary back-btn">
+            <span class="icon"><i class="fa-solid fa-circle-left"></i></span>
+            <span class="text">Back</span>
+          </button>
+        </div>
+      </div>
+      <div class="table-wrapper" style="max-height: 450px;">
+        <table class="table table-bordered" id="user-table">
+          <thead class="text-center">
+            <tr>
+              <th style="width: 40px;">Edit</th>
+              <th style="width: 45px;">Status</th>
+              <th style="width: 150px;">Name</th>
+              <th style="width: 95px;">Login Name</th>
+              <th style="width: 95px;">Contact</th>
+              <th style="width: 150px;">Email</th>
+              <th style="width: 100px !important;">Address</th>
+              <th>Detail</th>
+              <th>More Detail</th>
+              <th style="width: 130px;">Created On</th>
+  
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <template id="user-table-row">
+          <tr>
+              <td data-key="EDIT"       class="edit"><i class="fa-solid fa-pen-to-square"></i></td>
+              <td data-key="STAT"       class="status"><i class="fa-solid fa-circle"></i></td>
+              <td  data-key="USR_NM"    class="name">Charles Babbage</td>
+              <td data-key="USR_LOGIN" >charles</td>
+              <td data-key="USR_CNTC"  class="contact">08428561074</td>
+              <td data-key="USR_EML"  class="email">bagdeankit34@gmail.com</td>
+              <td data-key="USR_ADR" >Address</td>
+              <td data-key="USR_DTL1" >Details</td>
+              <td data-key="USR_DTL2" >More Detail</td>
+              <td data-key="ENTRDON"  class="created-on">2022-07-23 12:21:52</td>
+          </tr>
+        </template>
+      </div>
+    </section>
+
+    <section class="create-user view-page mt-1" data-view="create-user">
+      <div class="main-heading">Create New Website User:</div>
+      <div class="">
+        <form class="needs-validation template-form row" id="create-user-form" novalidate style="background: none;width: 100%;">
+          <div class="col-9 m-auto">
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-10 m-auto">
+                    <div class="form-wrapper">
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.fnm">First Name:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required type="text" class="" id="usr.fnm" name="usr.fnm">
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.lnm">Last Name:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required type="text" class="" id="usr.lnm" name="usr.lnm">
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.cntc">Contact:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required type="number" class="" id="usr.cntc" name="usr.cntc">
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.eml">Email:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required type="email" class="" id="usr.eml" name="usr.eml">
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.idno">Id Proof:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required type="text" class="" id="usr.idno" name="usr.idno">
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.adr">Address:</label>
+                        </div>
+                        <div class="col-7">
+                          <textarea required type="text" class="" id="usr.adr" name="usr.adr"></textarea>
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.dtl1">User Detail 1:</label>
+                        </div>
+                        <div class="col-7">
+                          <textarea required class="" id="usr.dtl1" name="usr.dtl1"></textarea>
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.dtl2">User Detail 2:</label>
+                        </div>
+                        <div class="col-7">
+                          <textarea required class="" id="usr.dtl2" name="usr.dtl2"></textarea>
+                          <input type="hidden" value='a' class="" id="stat" name="stat">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-10 m-auto">
+                    <div class="form-wrapper">
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="">Select User Role:</label>
+                        </div>
+                        <div class="col-7">
+                          <select  id="roles" name="usr.rolid"></select>
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="">Select Designation:</label>
+                        </div>
+                        <div class="col-7">
+                          <select  id="select-designation" name="usr.dsgid"></select>
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="">Select Office:</label>
+                        </div>
+                        <div class="col-7">
+                          <select  id="select-office" name="usr.ofcid"></select>
+                        </div>
+                      </div>
+                      <div class="text-center mb-2">
+                        <u>Login Information</u>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr.login">Login Id:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required="" type="text" class="usr_login" id="usr.login" name="usr.login">
+                        </div>
+                      </div>
+                      <div class="input-row row">
+                        <div class="col-5 form-label">
+                          <label for="usr_pwd">Password:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required="" type="password" class="" id="usr_pwd" name="usr.pwd">
+                        </div>
+                      </div>
+                      <div class="input-row row pb-2">
+                        <div class="col-5 form-label">
+                          <label for="crfm_pwd">Confirm Password:</label>
+                        </div>
+                        <div class="col-7">
+                          <input required="" type="password" class="" id="crfm_pwd">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 m-auto text-center">
+                <div>
+                  <hr>
+                  <button class="custome-icon-btn-primary" style="margin-left: 2px !important;"> 
+                    <span class="icon"><i class="fa-solid fa-left-long"></i></span>
+                    <span class="text">Create User</span>
+                  </button>
+                  <button class="custome-icon-btn-outline-primary back-btn" type="button" style="margin-left: 2px !important;"> 
+                    <span class="icon"><i class="fa-solid fa-circle-xmark"></i></span>
+                    <span class="text">Cancel</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="new-role view-page mt-1" data-view="new-role">
+      <h6><u>Create New Roles:</u></h6>
+      <div class="mt-1">
+        <div class="row" style="width: 100%;">
+          <div class="col-3">
+            <form class="template-form " style="padding-left: 4px;background-color: transparent;">
+              <label for="">Role Name</label>
+              <input type="text" id="name" required placeholder="please enter role name">
+              <hr>
+              <button type="submit"  id="submit-update-role" style="display: none;">Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class="row" id="screens" style="width: 100%;">
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="5" name="office" id="office">
+            <label class="form-check-label" for="office">
+            Office
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="6" name="designation" id="designation">
+            <label class="form-check-label" for="designation">
+            Designation
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="7" name="setting" id="setting">
+            <label class="form-check-label" for="setting">
+            Settings
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="8" name="profile" id="profile">
+            <label class="form-check-label" for="profile">
+            Profile
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="9" name="usermnage" id="usermnage">
+            <label class="form-check-label" for="usermnage">
+            Users
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="11" name="lotentry" id="lotentry">
+            <label class="form-check-label" for="lotentry">
+            Lot Entry
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="12" name="lotfinalize" id="lotfinalize">
+            <label class="form-check-label" for="lotfinalize">
+            Lot Finalize
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="13" name="bidder" id="bidder">
+            <label class="form-check-label" for="bidder">
+            Bidder
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="14" name="createauction" id="createauction">
+            <label class="form-check-label" for="createauction">
+            Create Auction
+            </label>
+          </div>
+          </div>
+          <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+            <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="15" name="auctionapproved" id="auctionapproved">
+            <label class="form-check-label" for="auctionapproved">
+            Auction Approve
+            </label>
+            </div>
+          </div>
+          <div class="col-lg-4 col-4 col-sm-4 col-md-4 mb-2">
+            <div class="form-check">
+              <input class="form-check-input" style="height:15px !important" type="checkbox" value="16" name="uploadupset" id="uploadupset">
+              <label class="form-check-label" for="uploadupset">
+              Upload Upset
+              </label>
+            </div>  
+          </div>
+        </div>
+        <div style="margin-left:4px;">
+          <hr>
+          <button class="custome-icon-btn-primary" id="create-role-btn">
+            <span class="icon"></span>
+            <span class="text">Create Role</span>
+          </button>
+          <button class="custome-icon-btn-primary back-btn">
+            <span class="icon"><i class="fa-solid fa-circle-left"></i></span>
+            <span class="text">Back</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="all-roles view-page mt-1" data-view="all-roles">
+      <div class="row" style="width: 100%;">
+        <div class="col-6">
+          <h6><u><u>Udated Created Role:</u></u></h6>
+        </div>
+        <div class="col-6" style="text-align: right;">
+          
+        </div>
+      </div>
+      <div class="mt-1 row"  style="width: 100%;">
+        <div class="col-3">
+          <form class="template-form " style="padding-left: 4px;background-color: transparent;">
+            <label for="">Select Role</label>
+            <select name="" id="roles"></select>
+            <hr>
+            <button type="submit"  id="submit-new-role" style="display: none;">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="row" id="screens" style="width: 100%;">
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="5" name="office" id="office">
+          <label class="form-check-label" for="office">
+          Office
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="6" name="designation" id="designation">
+          <label class="form-check-label" for="designation">
+          Designation
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="7" name="setting" id="setting">
+          <label class="form-check-label" for="setting">
+          Settings
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="8" name="profile" id="profile">
+          <label class="form-check-label" for="profile">
+          Profile
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="9" name="usermnage" id="usermnage">
+          <label class="form-check-label" for="usermnage">
+          Users
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="11" name="lotentry" id="lotentry">
+          <label class="form-check-label" for="lotentry">
+          Lot Entry
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="12" name="lotfinalize" id="lotfinalize">
+          <label class="form-check-label" for="lotfinalize">
+          Lot Finalize
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="13" name="bidder" id="bidder">
+          <label class="form-check-label" for="bidder">
+          Bidder
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="14" name="createauction" id="createauction">
+          <label class="form-check-label" for="createauction">
+          Create Auction
+          </label>
+        </div>
+        </div>
+        <div class="col-lg-2 col-2 col-sm-2 col-md-2 mb-2">
+          <div class="form-check">
+          <input class="form-check-input" style="height:15px !important" type="checkbox" value="15" name="auctionapproved" id="auctionapproved">
+          <label class="form-check-label" for="auctionapproved">
+          Auction Approve
+          </label>
+          </div>
+        </div>
+        <div class="col-lg-4 col-4 col-sm-4 col-md-4 mb-2">
+          <div class="form-check">
+            <input class="form-check-input" style="height:15px !important" type="checkbox" value="16" name="uploadupset" id="uploadupset">
+            <label class="form-check-label" for="uploadupset">
+            Upload Upset
+            </label>
+          </div>  
+        </div>
+      </div>
+      <div style="margin-left:4px;">
+        <hr>
+        <button class="custome-icon-btn-primary" id="create-role-btn">
+          <span class="icon"></span>
+          <span class="text">Update Role</span>
+        </button>
+        <button class="custome-icon-btn-primary back-btn">
+          <span class="icon"><i class="fa-solid fa-circle-left"></i></span>
+          <span class="text">Back</span>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- Popups -->
+
+    <!-- Create User Popup -->
+    <div class="create-user-popup">
+      <div>
+        <div class="header">
+          Edit User Info
+          <div class="hr"></div>
+        </div>
+        <div class="content-wrapper">
+          <form class="template-form" id="update-user">
+            <div class="row">
+              <div class="col-6">
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.fnm">First Name:</label>
+                  </div>
+                  <div class="col-7">
+                    <input required type="text"  data-key="USR_FNM" class="" id="usr.fnm" name="usr.fnm">
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.lnm">Last Name:</label>
+                  </div>
+                  <div class="col-7">
+                    <input required type="text" class="" id="usr.lnm" name="usr.lnm" data-key="USR_LNM">
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.adr">Address:</label>
+                  </div>
+                  <div class="col-7">
+                    <textarea required type="text" class="" id="usr.adr" name="usr.adr" data-key="USR_ADR"></textarea>
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.dtl1">User Detail 1:</label>
+                  </div>
+                  <div class="col-7">
+                    <textarea required class="" id="usr.dtl1" name="usr.dtl1" data-key="USR_DTL1"></textarea>
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.dtl2">User Detail 2:</label>
+                  </div>
+                  <div class="col-7">
+                    <textarea required class="" id="usr.dtl2" name="usr.dtl2" data-key="USR_DTL2"></textarea>
+                    <input type="hidden" value='a' class="" id="stat" name="stat" data-key="STAT">
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.cntc">Contact:</label>
+                  </div>
+                  <div class="col-7">
+                    <input required type="number" class="" id="usr.cntc" name="usr.cntc" data-key="USR_CNTC">
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.eml">Email:</label>
+                  </div>
+                  <div class="col-7">
+                    <input required type="email" class="" id="usr.eml" name="usr.eml" data-key="USR_EML">
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="usr.idno">Id Proof:</label>
+                  </div>
+                  <div class="col-7">
+                    <input required type="text" class="" id="usr.idno" name="usr.idno" data-key="USR_IDNO">
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="">Select User Role:</label>
+                  </div>
+                  <div class="col-7">
+                    <select  id="roles" data-key="USR_ROLID" name="usr.rolid" required></select>
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="">Select Designation:</label>
+                  </div>
+                  <div class="col-7">
+                    <select  id="select-designation" data-key="USR_DSGID" name="usr.dsgid" required></select>
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="">Select Office:</label>
+                  </div>
+                  <div class="col-7">
+                    <select  id="select-office" data-key="USR_OFCID" name="usr.ofcid" required></select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12"><hr></div>
+              <div class="col-8" style="text-align: right;">
+                <input type="hidden" id="UID" name="UID" data-key="UID">
+                <input type="hidden" id="clnt_id" data-key="CLNT_ID" name="clnt.id">
+                <button class="custome-icon-btn-primary">
+                  <span class="icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                  <span class="text">Update User Information</span>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="row mt-3">
+            <div class="col-6 m-auto">
+              <h6 class="text-center"><u>Login Information</u></h6>
+              <form class="template-form" id="change-password">
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="user_pwd" >New Password</label>
+                  </div>
+                  <div class="col-7">
+                    <input type="text" class="" id="user_pwd" name="usr.pwd">
+                  </div>
+                </div>
+                <div class="input-row row">
+                  <div class="col-5 form-label">
+                    <label for="user_pwd">Confirm Password</label>
+                  </div>
+                  <div class="col-7">
+                    <input type="text" class="" id="crfm_passwd">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12"><hr></div>
+                  <div class="col-9" style="text-align: right;">
+                    <button class="custome-icon-btn-primary">
+                      <span class="icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                      <span class="text">Change Password</span>
+                    </button>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

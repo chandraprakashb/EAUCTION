@@ -1,0 +1,352 @@
+<script>
+  function Profile() { 
+    
+    this.mainSetup = () =>{
+      this.getUserProfile();
+      this.manageCreateUser();
+      this.manageUpdateProfile(); 
+      this.manageChangePass();
+    }
+
+    this.getUserProfile = async()=> {
+        let reqData = new FormData();
+            reqData.append('act','srch');
+        let profileData = await sendHttpRequest('eaucnmanage/getprofile', reqData);
+            console.log(profileData);
+            formDataFiller("#update-info-form",profileData.Record)
+        // renderInfo(profileData.Record)
+    }
+
+    // Manage Create User
+    this.manageCreateUser = () =>{
+      this.createUserPopup = new Modal({selector:'.create-new-user-popup',wrapperCss:"width:30%"})
+      this.officeSelect = document.getElementById('office');
+      this.desgSelect = document.getElementById('designation');
+      $('.create-user-btn').click(this.createUserPopup.showModal);
+      this.getOfcDsg();
+      addFormValidations('create-user',this.createUser);
+    }
+
+    this.getOfcDsg = async() =>{
+      let reqData = new FormData();
+      reqData.append('act','srch')
+      var dsgData = await sendHttpRequest('eaucnmanage/managecommondesigs', reqData);
+      var ofcData = await sendHttpRequest('eaucnmanage/managecommonoffice', reqData);
+      this.desgSelect.innerHTML = getOptions(dsgData.Records,'DSG_NM','DSGID');
+      this.officeSelect.innerHTML =  getOptions(ofcData.Records,'OFC_NM','OFCID');
+    }
+
+    this.createUser = async() =>{
+      let formData = new FormData($("#create-user")[0]);
+      formData.append('act','save');
+
+      if(this.desgSelect.value !== ''){
+        formData.append('dsgid',this.desgSelect.value);
+        formData.append('dsg.nm',this.desgSelect[this.desgSelect.selectedIndex].label);
+      }else{
+        Alert("error","Missing Designation !","Please Select User Designation !");
+        return;
+      }
+
+      if(this.officeSelect.value !== ''){
+        formData.append('ofcid',this.officeSelect.value);
+        formData.append('ofc.nm',this.officeSelect[this.desgSelect.selectedIndex].label);
+      }else{  
+        Alert("error","Missing Office !","Please Select User Office !");
+        return;
+      }
+
+
+      await sendHttpRequest('eaucnmanage/managecommonoffice', formData);
+    }
+
+    // End Create User
+
+    // Manage Update Profile
+    this.manageUpdateProfile = () =>{
+
+      addFormValidations('update-info-form',this.updateInfo)
+
+    }
+
+    this.updateInfo = async() =>{
+      let profileFormData = new FormData($('#update-info-form')[0]);
+        let profileData = new FormData();
+        let profileJson = formDataToJson(profileFormData);
+        delete profileJson.uid;
+        profileData.append('act','prflupdt');
+        profileData.append('uid',$("#uid").val());
+        profileData.append('info',JSON.stringify(profileJson));
+
+          await sendHttpRequest('eaucnmanage/getprofile', profileData);
+    }
+    // End Update Profile
+
+    // Manage Change User Password
+    this.manageChangePass = () =>{
+
+      addFormValidations('change-password',this.updatePassword)
+    }
+    
+// crfm_pwd
+    this.updatePassword = async() =>{
+      if($("#usr_pwd").val() !== $("#crfm_pwd").val()){
+        Alert('error',"Password Did Not Matched!","Please Enter Valid Password !")
+        return;
+      }else{
+        var formData = new FormData();
+        formData.append('act','rstpwd');
+        formData.append('uid',$("#uid").val());
+        formData.append('old.pwd',$("#old_pwd").val())
+        formData.append('usr.pwd',$("#usr_pwd").val())
+        await sendHttpRequest('eaucnmanage/getprofile',formData)
+      }
+    }
+    // End Change User Password
+
+    this.mainSetup();
+  }
+
+  new Profile();
+</script>
+
+
+<style>
+  .icon-text-wrapper{
+
+  }
+
+  .icon-text-wrapper .icon{
+    font-size: 25px;
+    color: rgba(0,0,0,0.4);
+  }
+
+  .icon-text-wrapper .text{
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  form{
+    -webkit-box-shadow: -3px -2px 16px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: -3px -2px 16px -7px rgba(0,0,0,0.75);
+    box-shadow: -3px -2px 16px -7px rgba(0,0,0,0.75);
+    border-radius: 5px;
+  }
+</style>
+
+
+<div class="profile-page">
+
+    <div class="row header" style="width:100%">
+        <div class="col-5 m-auto">
+          <h4 class="text-center">
+            <span class="heading"><strong>Profile</strong></span>
+            <span class="icon">
+              <i class="fa-solid fa-id-badge"></i>
+            </span>
+          </h4>
+          <hr>
+        </div>
+    </div>
+
+    <div class="row" style="width:100%">
+      <div class="col-2">
+        <div style="padding-left: 5px;margin-top:5px;">
+          <button class="custome-icon-btn-primary create-user-btn">
+            <span class="icon"><i class="fa-solid fa-user-plus"></i></span>
+            <span class="text">Create New User</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-10">     
+        <div class="row" style="width:100%">
+          <div class="col-5">
+            <div class="icon-text-wrapper">
+              <span class="icon"><i class="fa-solid fa-circle-user"></i></span> 
+              <span class="text">Your Infomartion:</span>
+            </div>
+            <form novalidate  class="template-form needs-validation" id="update-info-form">
+    
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="usr.fnm">First Name:</label>
+                </div>
+                <div class="col-8">
+                  <input required type="text" data-key="USR_FNM" id="usr.fnm" name="usr.fnm">
+                </div>
+              </div>
+    
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="usr.lnm">Last Name:</label>
+                </div>
+                <div class="col-8">
+                  <input required type="text" data-key="USR_LNM" id="usr.lnm" name="usr.lnm">
+                </div>
+              </div>
+              
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="usr.cntc">Contact:</label>
+                </div>
+                <div class="col-8">
+                  <input required type="number" data-key="USR_CNTC" id="usr.cntc" name="usr.cntc">
+                </div>
+              </div>
+    
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="usr.eml">Email:</label>
+                </div>
+                <div class="col-8">
+                  <input required type="text" data-key="USR_EML" id="usr.eml" name="usr.eml">
+                </div>
+              </div>
+    
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="usr.adr">Address:</label>
+                </div>
+                <div class="col-8">
+                  <textarea required type="text" data-key="USR_ADR" id="usr.adr" name="usr.adr"></textarea>
+                </div>
+              </div>
+    
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="usr.dtl1">User Detail 1:</label>
+                </div>
+                <div class="col-8">
+                  <textarea required data-key="USR_DTL1" id="usr.dtl1" name="usr.dtl1"></textarea>
+                </div>
+              </div>
+    
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="usr.dtl2">User Detail 2:</label>
+                </div>
+                <div class="col-8">
+                  <textarea required data-key="USR_DTL2" id="usr.dtl2" name="usr.dtl2"></textarea>
+                </div>
+              </div>
+    
+              <div class="input-row row " style="margin-top: -10px !important;">
+                <div class="col-4 form-label">
+                </div>
+                <div class="col-8">
+                  <input type="hidden" data-key="UID" id="uid" autocomplete="off" name="uid">
+                  <button class="custome-icon-btn-primary">
+                    <span class="icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                    <span class="text">Update Info</span>
+                  </button>
+                  <button class="custome-icon-btn-outline-primary" type="reset">
+                    <span class="icon"><i class="fa-solid fa-arrow-rotate-right"></i></span>
+                    <span class="text">Reset</span>
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <div class="col-2" style="width: 5%;">
+    
+          </div>
+          <div class="col-5">
+            <div class="icon-text-wrapper">
+              <span class="icon"><i class="fa-solid fa-key"></i></span> 
+              <span class="text">Change Password:</span>
+            </div>
+            <form novalidate  class="template-form needs-validation" id="change-password">
+                <div class="input-row row">
+                  <div class="col-4 form-label">
+                    <label for="old.pwd">Old Password:</label>
+                  </div>
+                  <div class="col-8">
+                    <input required type="password" id="old_pwd" autocomplete="off" name="old.pwd">
+                  </div>
+                </div>
+    
+                <div class="input-row row">
+                  <div class="col-4 form-label">
+                    <label for="usr_pwd">New Password:</label>
+                  </div>
+                  <div class="col-8">
+                    <input required type="password" id="usr_pwd" autocomplete="off" name="usr.pwd">
+                  </div>
+                </div>
+    
+                <div class="input-row row">
+                  <div class="col-4 form-label">
+                    <label for="crfm_pwd">Confirm Password:</label>
+                  </div>
+                  <div class="col-8">
+                    <input required type="password" id="crfm_pwd">
+                  </div>
+                </div>
+    
+                <div class="input-row row " style="margin-top: -10px !important;">
+                  <div class="col-4 form-label">
+                  </div>
+                  <div class="col-8">
+                    <button class="custome-icon-btn-primary">
+                      <span class="icon"><i class="fa-solid fa-unlock-keyhole"></i></span>
+                      <span class="text">Update Password</span>
+                    </button>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="create-new-user-popup">
+      <div>
+        <div class="header">
+          Create New User
+          <div class="hr"></div>
+        </div>
+        <div class="content-wrapper">
+          <form class="template-form needs-validation" novalidate id="create-user">
+            <div class="input-row row">
+              <div class="col-4 form-label">
+                <label for="user_name">User Name:</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="usr.nm" id="user_name" required>
+              </div>
+            </div>
+            <div class="input-row row">
+              <div class="col-4 form-label">
+                <label for="designation">Designation:</label>
+              </div>
+              <div class="col-8">
+                <select id="designation" required></select>
+              </div>
+            </div>
+            <div class="input-row row">
+              <div class="col-4 form-label">
+                <label for="office">Office:</label>
+              </div>
+              <div class="col-8">
+                <select id="office" required>
+                            
+                </select>
+              </div>
+            </div>
+            <div class="input-row row">
+              <div class="col-4 form-label"></div>
+              <div class="col-8">
+                <button class="custome-icon-btn-primary">
+                  <span class="icon"></span>
+                  <span class="text">Create User</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+</div>

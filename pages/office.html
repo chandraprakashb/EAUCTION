@@ -1,0 +1,317 @@
+
+<script>
+  function Office() { 
+
+    this.mainSetup = () => {
+      this.officeSelect = document.getElementById('select-office');
+      this.formModal = new Modal({selector:"#update-form-popup",wrapperCss:"width:40%;"});
+      this.updateofficeSelect = document.querySelector('#update-ofc #select-office');
+      
+      new TabNavigation('.tab-navigation-btns','button','.tab-navigation-pages','.nav-page');
+      addFormValidations('add-ofc',this.addoffices);
+      addFormValidations('update-ofc',this.updateOffice);
+      this.getAllOffices();
+      renderOptions.getOffices('.select-office')
+    }
+
+    this.getAllOffices = async() => {
+      let reqData = new FormData();
+        reqData.append('act','srch')
+      this.officesdata = await sendHttpRequest('eaucnmanage/managecommonoffice',reqData);
+      renderTableRow('#office-table',"#office-table-row",this.officesdata.Records,this.rowLogic);
+      renderHierarchy(
+            '#hierarchy-tree',
+            treeDataGeneratore(this.officesdata.Records,'OFCID','UND_OFCID','OFC_NM')
+        );
+      
+    }
+
+    this.addoffices = async () =>{
+        let addForm = $('#add-ofc')[0];
+        let ofsData = new FormData($('#add-ofc')[0]);
+            ofsData.delete('ofc.lvl');
+            ofsData.append('act','save');
+            ofsData.append('ofc.lvl',parseInt(ofsData.get('ofc.lvl')+1));
+
+            if(this.officeSelect.value === ''){
+              ofsData.append('und.ofcnm','');
+              ofsData.append('und.ofcid','0');
+            }
+            else{
+              ofsData.append('und.ofcnm',this.officeSelect.selectedOptions[0].label);
+              ofsData.append('und.ofcid',this.officeSelect.value);
+            }
+
+        await sendHttpRequest('eaucnmanage/managecommonoffice',ofsData);
+        this.getAllOffices()
+    }
+
+    this.openPopup = (formData) =>{
+      formDataFiller("#update-ofc",formData)
+      this.formModal.showModal();
+    }
+
+    this.updateOffice = async() =>{
+      var ofsData = new FormData(document.getElementById('update-ofc'));
+          ofsData.append('act','updt');
+          if(this.updateofficeSelect.value === ''){
+              ofsData.append('und.ofcnm','');
+              ofsData.append('und.ofcid','0');
+            }
+            else{
+              ofsData.append('und.ofcnm',this.updateofficeSelect.selectedOptions[0].label);
+              ofsData.append('und.ofcid',this.updateofficeSelect.value);
+          }
+          await sendHttpRequest('eaucnmanage/managecommonoffice',ofsData);
+          this.formModal.hideModal()
+          this.getAllOffices();
+    }
+
+    this.rowLogic = (row,cells,data) =>{
+
+      for(let cell of cells){
+        var cellInfo = cell.dataset.key;
+
+        if(cellInfo === 'EDIT') {
+          cell.addEventListener('click',()=>this.openPopup(data))
+          continue;
+        };
+
+        if(cellInfo === 'STAT' && data.STAT === 'A'){
+          cell.classList.add('green-status');
+          continue;
+        }
+
+        cell.textContent = data[cellInfo]
+      }
+
+    }
+
+    this.mainSetup();
+  }
+
+  new Office();
+</script>
+
+
+<style>
+  .office-name{
+    color: var(--blue);
+    font-weight: 700;
+    text-align: left;
+    padding-left: 5px !important;
+  }
+
+  .und-office {
+    
+  }
+
+  #hierarchy-tree{
+    background-color: #fff;
+    max-height: 400px;
+    overflow-y:scroll;
+  }
+
+  .icon-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 400px;
+    color: var(--blue);
+    opacity: 0.2;
+    /* background-color: red; */
+  }
+</style>
+
+
+<div class="office-page">
+
+    <div class="row header" style="width:100%">
+        <div class="col-5 m-auto">
+          <h4 class="text-center">
+            <span class="heading"><strong>Office</strong></span>
+            <span class="icon">
+              <i class="fa-sharp fa-solid fa-building-circle-check"></i>
+            </span>
+          </h4>
+          <hr>
+        </div>
+    </div>
+
+    <section class="button-section mt-3">
+     <div style="padding-left:4px" class="tab-navigation-btns">
+      <button class="custome-icon-btn-primary" data-page="all-offices">
+        <span class="icon"><i class="fa-sharp fa-solid fa-building"></i></span>
+        <span class="text">All Offices</span>
+      </button>
+      <button class="custome-icon-btn-outline-primary" data-page="add-office" data-active='true'>
+        <span class="icon"><i class="fa-sharp fa-solid fa-building-circle-arrow-right"></i></span>
+        <span class="text">Add Offices</span>
+      </button>
+      <button class="custome-icon-btn-outline-primary" data-page="office-hierarchy">
+        <span class="icon"><i class="fa-solid fa-sitemap"></i></span>
+        <span class="text">Office Hierarchy</span>
+      </button>
+     </div>
+      <hr>
+    </section>
+
+    <section class="tab-navigation-pages">
+
+      <div class="nav-page" data-page="all-offices" style="display: none;">
+        <h6><u>All Offices:</u></h6>
+        <div class="table-wrapper" style="max-height:400px;" >
+          <table class="table table-bordered" id="office-table">
+            <thead class="text-center">
+              <tr>
+                <th style="width: 30px;">Action</th>
+                <th style="width: 200px;">Office Name</th>
+                <th style="width: 200px;">Under Office</th>
+                <th>Details</th>
+                <th style="width: 100px;">Office Code</th>
+                <th style="width: 30px;">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="nav-page" data-page="add-office" style="display: none;">
+        <h6><u>Add New Offices:</u></h6>
+        <div class="row" style="width: 100%;">
+          <div class="col-5">
+            <form novalidate  class="template-form needs-validation" id="add-ofc">
+              <div class="input-row row">
+                <div class="col-4 form-label"><label for="ofc.nm">Offices Name:</label></div>
+                <div class="col-8"><input required="" name="ofc.nm" offices="" type="text"  id="ofc.nm" data-key="OFC_NM"></div>
+              </div>
+              <div class="input-row row">
+                <div class="col-4 form-label"><label for="selct-office">Under offices:</label></div>
+                <div class="col-8">
+                  <select name="" id="select-office" data-key="UND_OFCID" class="select-office">
+                    <option value="0">Select</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="ofc.detail">offices Detail:</label>
+                </div>
+                <div class="col-8">
+                  <textarea required="" rows="5" type="text"  id="ofc.detail" name="ofc.detail" data-key="OFC_DETAIL" ></textarea>
+                </div>
+              </div>
+              <div class="input-row row">
+                <input type="hidden"  id="ofc.code" name="ofc.code" data-key="OFC_CODE">
+                <input type="hidden"  id="ofc.lvl" name="ofc.lvl" data-key="OFC_LVL">
+                <input type="hidden"  id="stat" name="stat" value="A" data-key="STAT">
+               
+              </div>
+              <div class="input-row row">
+                <div class="col-4"></div>
+                <div class="col-8">
+                  <button class="custome-icon-btn-primary" type="submit">
+                    <span class="icon"></span>
+                    <span class="text">
+                      Save Office
+                    </span>
+                  </button>
+                  <button class="custome-icon-btn-outline-primary" type="reset">
+                    <span class="icon"></span>
+                    <span class="text">
+                      Reset
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-7">
+            <div class="icon-wrapper">
+              <i class="fa-sharp fa-solid fa-building-circle-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="nav-page" data-page="office-hierarchy" style="display: none;">
+        <h6><u>Office Hierarchy</u></h6>
+        <div id="hierarchy-tree" class="">
+
+        </div>
+      </div>
+
+    </section>
+
+    <template id="office-table-row">
+      <tr>
+        <td data-key="EDIT"       class="edit" ><i class="fa-solid fa-pen-to-square"></i></td>
+        <td data-key="OFC_NM"     class="office-name"></td>
+        <td data-key="UND_OFCNM"  class="und-office"></td>
+        <td data-key="OFC_DETAIL"></td>
+        <td data-key="OFC_CODE"></td>
+        <td data-key="STAT" class="status"><i class="fa-solid fa-circle"></i></td>
+      </tr>
+    </template>
+
+    <!-- Popups -->
+
+    <!-- Upadte Form -->
+    <div id="update-form-popup">
+      <div>
+        <div class="header">
+          Update Office
+          <div class="hr"></div>
+        </div>
+        <div class="content-wrapper">
+          <form novalidate  class="template-form needs-validation" id="update-ofc">
+            <div class="input-row row">
+              <div class="col-4 form-label"><label for="ofc.nm">Offices Name:</label></div>
+              <div class="col-8"><input required="" name="ofc.nm" offices="" type="text"  id="ofc.nm" data-key="OFC_NM"></div>
+            </div>
+            <div class="input-row row">
+              <div class="col-4 form-label"><label for="selct-office">Under offices:</label></div>
+              <div class="col-8">
+                <select name="" id="select-office" data-key="UND_OFCID" class="select-office">
+                  <option value="">Select</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-row row">
+              <div class="col-4 form-label">
+                <label for="ofc.detail">offices Detail:</label>
+              </div>
+              <div class="col-8">
+                <textarea required="" rows="5" type="text"  id="ofc.detail" name="ofc.detail"  data-key="OFC_DETAIL"></textarea>
+              </div>
+            </div>
+            <div class="input-row row">
+              <input type="hidden"  id="ofc.code" name="ofc.code" data-key="OFC_CODE">
+              <input type="hidden"  id="ofc.lvl" name="ofc.lvl" data-key="OFC_LVL">
+              <input type="hidden"  id="stat" name="stat" value="A" data-key="STAT">
+              <input type="hidden" class="form-control" id="updt_ofcid" name="ofcid" data-key="OFCID">
+            </div>
+            <div class="input-row row">
+              <div class="col-4"></div>
+              <div class="col-8">
+                <button class="custome-icon-btn-primary" type="submit">
+                  <span class="icon"></span>
+                  <span class="text">
+                    Update Office
+                  </span>
+                </button>
+                <button class="custome-icon-btn-outline-primary" type="reset">
+                  <span class="icon"></span>
+                  <span class="text">
+                    Reset
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

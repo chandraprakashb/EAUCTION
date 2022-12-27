@@ -1,0 +1,320 @@
+<script>
+  function Designation(){ 
+
+    this.mainSetup = () =>{
+      this.desgSelect = document.getElementById('select-desg');
+      this.formModal = new Modal({selector:"#update-form-popup",wrapperCss:"width:40%;"});
+      this.updateDesgSelect = document.querySelector('#update-dsg #select-dsg');
+
+      renderOptions.getDesignations('.select-dsg')
+
+      new TabNavigation('.tab-navigation-btns','button','.tab-navigation-pages','.nav-page');
+      addFormValidations('add-desg',this.addDesgs);
+      addFormValidations('update-dsg',this.updateDsg);
+      this.getAllDesigs()
+    };
+
+    this.getAllDesigs = async() => {
+      let reqData = new FormData();
+        reqData.append('act','srch');
+      this.designationData = await sendHttpRequest('eaucnmanage/managecommondesigs',reqData);
+      renderTableRow('#desg-table',"#desg-table-row",this.designationData.Records,this.rowLogic);
+      renderHierarchy(
+            '#hierarchy-tree',
+            treeDataGeneratore(this.designationData.Records,'DSGID','UND_DSGID','DSG_NM')
+        );
+    }
+
+    this.addDesgs = async () =>{
+        let desgData = new FormData($('#add-desg')[0]);
+            desgData.delete('dsg.lvl');
+            desgData.append('act','save');
+            desgData.append('dsg.lvl',parseInt(desgData.get('dsg.lvl')+1));
+
+            if(this.desgSelect.value === ''){
+              desgData.append('und.dsgnm','');
+              desgData.append('und.dsgid','0');
+            }
+            else{
+              desgData.append('und.dsgnm',this.desgSelect.selectedOptions[0].label);
+              desgData.append('und.dsgid',this.desgSelect.value);
+            }
+
+        await sendHttpRequest('eaucnmanage/managecommondesigs',desgData);
+        this.getAllDesigs()
+    }
+
+    this.openPopup = (formData) =>{
+      console.log(formData);
+      formDataFiller("#update-dsg",formData)
+      this.formModal.showModal();
+    }
+
+    this.updateDsg = async() =>{
+      var ofsData = new FormData(document.getElementById('update-dsg'));
+        ofsData.append('act','updt');
+        if(this.updateDesgSelect.value === ''){
+            ofsData.append('und.dsgnm','');
+            ofsData.append('und.dsgid','0');
+          }
+          else{
+            ofsData.append('und.dsgnm',this.updateDesgSelect.selectedOptions[0].label);
+            ofsData.append('und.dsgid',this.updateDesgSelect.value);
+        }
+        await sendHttpRequest('eaucnmanage/managecommondesigs',ofsData);
+        this.formModal.hideModal()
+        this.getAllDesigs()
+    }
+
+    this.rowLogic = (row,cells,data) =>{
+
+      for(let cell of cells){
+        var cellInfo = cell.dataset.key;
+
+        if(cellInfo === 'EDIT') {
+          cell.addEventListener('click',()=>this.openPopup(data))
+          continue;
+        };
+
+        if(cellInfo === 'STAT' && data.STAT === 'A'){
+          cell.classList.add('green-status');
+          continue;
+        }
+
+        cell.textContent = data[cellInfo]
+      }
+
+    }
+
+    this.mainSetup();
+  }
+
+
+  new Designation()
+</script>
+
+<style>
+  .desg-name{
+    color: var(--blue);
+    font-weight: 700;
+    text-align: left;
+    padding-left: 5px !important;
+  }
+
+  .und-desg {
+    
+  }
+
+  #hierarchy-tree{
+    background-color: #fff;
+    max-height: 400px;
+    overflow-y:scroll;
+  }
+  .icon-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 400px;
+    color: var(--blue);
+    opacity: 0.2;
+    /* background-color: red; */
+  }
+
+  .resizable {
+    /* border: 2px solid; */
+  /* padding: 20px; 
+  width: 300px; */
+  resize: horizontal;
+  overflow: hidden;
+    cursor: col-resize;
+    
+  } 
+</style>
+
+<div class="designation-page">
+
+    <div class="row header" style="width:100%">
+        <div class="col-5 m-auto">
+          <h4 class="text-center">
+            <span class="heading"><strong>Designation</strong></span>
+            <span class="icon">
+              <i class="fa-solid fa-person-walking-luggage"></i>
+            </span>
+          </h4>
+          <hr>
+        </div>
+    </div>
+
+    <section class="button-section mt-3">
+      <div style="padding-left:4px" class="tab-navigation-btns">
+        <button class="custome-icon-btn-primary" data-page="all-desg" data-active='true'>
+          <span class="icon"><i class="fa-solid fa-table-list"></i></span>
+          <span class="text">All Designations</span>
+        </button>
+        <button class="custome-icon-btn-outline-primary" data-page="add-desg">
+          <span class="icon"><i class="fa-solid fa-table"></i></span>
+          <span class="text">Add Designation</span>
+        </button>
+        <button class="custome-icon-btn-outline-primary" data-page="desg-hierarchy">
+          <span class="icon"><i class="fa-solid fa-sitemap"></i></span>
+          <span class="text">Designation Hierarchy</span>
+        </button>
+       </div>
+        <hr>
+    </section>
+
+    <section class="tab-navigation-pages">
+      <div class="nav-page" data-page="all-desg" style="display: none;">
+        <h6><u>All Designations:</u></h6>
+        <div class="table-wrapper" style="max-height:400px;" >
+          <table class="table table-bordered" id="desg-table">
+            <thead class="text-center">
+              <tr>
+                <th style="width: 30px;"><div class="res">Act</div></th>
+                <th style="width: 200px;">Designation Name</th>
+                <th style="width: 200px;">Under Designation</th>
+                <th>Details</th>
+                <th style="width: 150px;">Designation Code</th>
+                <th style="width: 30px;">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="nav-page" data-page="add-desg" style="display: none;">
+        <h6><u>Add Designation:</u></h6>
+        <div class="row" style="width: 100%;">
+          <div class="col-5">
+            <form novalidate  class="template-form needs-validation" id="add-desg">
+              <div class="input-row row">
+                <div class="col-4 form-label"><label for="dsg.nm">Designations Name</label></div>
+                <div class="col-8"><input required="" name="dsg.nm" Designations="" type="text"  data-key='DSG_NM' id="dsg.nm"></div>
+              </div>
+              <div class="input-row row">
+                <div class="col-4 form-label"> <label for="selct-designation">Under Designations</label></div>
+                <div class="col-8">
+                  <select name="" data-key='' id="select-desg" data-key="UND_DSGID" class="select-dsg">
+                    <option value="0">Select</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row row">
+                <div class="col-4 form-label">
+                  <label for="dsg.detail">Designations Detail</label>
+                </div>
+                <div class="col-8">
+                  <textarea required="" rows="5" type="text"  data-key='' id="dsg.detail" name="dsg.detail" data-key="DSG_DETAIL" ></textarea>
+                </div>
+              </div>
+              <div class="input-row row">
+                <input type="hidden"  data-key='' id="dsg.code" name="dsg.code" data-key="DSG_CODE" >
+                <input type="hidden"  data-key='' id="dsg.lvl" name="dsg.lvl" data-key="DSG_LVL">
+                <input type="hidden"  data-key='' id="stat" name="stat" value="A" data-key="STAT">
+               
+              </div>
+              <div class="input-row row">
+                <div class="col-4"></div>
+                <div class="col-8">
+                  <button class="custome-icon-btn-primary" type="submit">
+                    <span class="icon"></span>
+                    <span class="text">
+                      Save Designations
+                    </span>
+                  </button>
+                  <button class="custome-icon-btn-outline-primary" type="reset">
+                    <span class="icon"></span>
+                    <span class="text">
+                      Reset
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-7">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-table"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="nav-page" data-page="desg-hierarchy"  style="display: none;">
+        <h6><u>Designation Hierarchy:</u></h6>
+        <div id="hierarchy-tree" class="">
+
+        </div>
+      </div>
+    </section>
+
+
+    <template id="desg-table-row">
+      <tr>
+        <td data-key="EDIT" class="edit" ><i class="fa-solid fa-pen-to-square"></i></td>
+        <td data-key="DSG_NM" class="desg-name"></td>
+        <td data-key="UND_DSGNM" class="und-desg"></td>
+        <td data-key="DSG_DETAIL"></td>
+        <td data-key="DSG_CODE"></td>
+        <td data-key="STAT" class="status"><i class="fa-solid fa-circle"></i></td>
+      </tr>
+    </template>
+
+     <!-- Upadte Form -->
+     <div id="update-form-popup">
+      <div>
+        <div class="header">
+          Update Office
+          <div class="hr"></div>
+        </div>
+        <div class="content-wrapper">
+          <form novalidate  class="template-form needs-validation" id="update-dsg">
+            <div class="input-row row">
+              <div class="col-4 form-label"><label for="dsg.nm">Desigs Name:</label></div>
+              <div class="col-8"><input required="" name="dsg.nm" Desigs="" type="text"  id="dsg.nm" data-key="DSG_NM"></div>
+            </div>
+            <div class="input-row row">
+              <div class="col-4 form-label"><label for="selct-office">Under Desigs:</label></div>
+              <div class="col-8">
+                <select name="" id="select-dsg" data-key="UND_DSGID" class="select-dsg">
+                  <option value="">Select</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-row row">
+              <div class="col-4 form-label">
+                <label for="dsg.detail">Desigs Detail:</label>
+              </div>
+              <div class="col-8">
+                <textarea required="" rows="5" type="text"  id="dsg.detail" name="dsg.detail"  data-key="DSG_DETAIL"></textarea>
+              </div>
+            </div>
+            <div class="input-row row">
+              <input type="hidden"  id="dsg.code" name="dsg.code" data-key="DSG_CODE">
+              <input type="hidden"  id="dsg.lvl" name="dsg.lvl" data-key="DSG_LVL">
+              <input type="hidden"  id="stat" name="stat" value="A" data-key="STAT">
+              <input type="hidden" class="form-control" id="updt_dsgid" name="dsgid" data-key="DSGID">
+            </div>
+            <div class="input-row row">
+              <div class="col-4"></div>
+              <div class="col-8">
+                <button class="custome-icon-btn-primary" type="submit">
+                  <span class="icon"></span>
+                  <span class="text">
+                    Update Office
+                  </span>
+                </button>
+                <button class="custome-icon-btn-outline-primary" type="reset">
+                  <span class="icon"></span>
+                  <span class="text">
+                    Reset
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+</div>

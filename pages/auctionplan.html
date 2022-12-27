@@ -1,0 +1,642 @@
+<script>
+    function AuctionPaln(){
+
+    this.mainSeutp = () =>{
+        this.managePublishedschdl();
+    };
+
+    this.managePublishedschdl = () =>{
+        var publishBtn = document.querySelector('.view-published-schedule');
+        this.publishedModal = new Modal({selector:".published-schedule-popup",wrapperCss:"width:70%;"});
+        publishBtn.addEventListener('click',this.publishedModal.showModal)
+    }
+        
+    this.mainSeutp();
+    
+    }
+
+    new AuctionPaln();
+</script>
+
+<style>
+    .auction-plan .heading {
+        font-weight: 600;
+    }
+
+    .button-collapes{
+        border: none;
+        background-color: transparent;
+        font-size: 30px;
+        font-weight: bold !important;   
+        color: var(--blue);
+        transition: 0.5s linear;
+    }
+
+    .collapsed i{
+        transition: 0.5s linear;
+        transform: rotate(-180deg);
+    }
+
+    .material-summery-wrapper .table-wrapper{
+        -webkit-box-shadow: 0px 4px 67px -18px rgba(63,106,216,1);
+    -moz-box-shadow: 0px 4px 67px -18px rgba(63,106,216,1);
+    box-shadow: 0px 4px 67px -18px rgba(63,106,216,1);
+    }
+
+</style>
+
+<div class="auction-plan">
+
+    <div class="row header" style="width:100%">
+        <div class="col-5 m-auto">
+          <h4 class="text-center">
+            <span class="heading"><strong>Auction Plan</strong></span>
+            <span class="icon">
+                <i class="fa-sharp fa-solid fa-tree"></i>
+            </span>
+          </h4>
+          <hr>
+        </div>
+    </div>
+
+    <form class="search-form needs-validation" novalidate id="search-form">
+        <div class="row" style="width:100%">
+            <div class="col-3 search-input-wrapper">
+              <label class="label">Office / Division Name:</label>
+              <select name="" id=""><option value="">Select</option></select>
+            </div>
+            <div class="col-2 search-input-wrapper">
+              <label class="label">eAuction No.:</label>
+              <select name="" id="">
+                <option value="">Select</option>
+              </select>
+            </div>
+            <div class="col-3 search-input-wrapper">
+                <label class="label">Auction Date:</label>
+                <input type="date">
+            </div>
+            <div class="col-3">
+                <button class="custome-icon-btn-primary">
+                <span class="icon"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></span>
+                <span class="text">Search</span>
+              </button>
+              <button class="custome-icon-btn-primary view-published-schedule" type="button">
+                <span class="icon"><i class="fa-solid fa-upload"></i></span>
+                <span class="text">Published Schedule</span>
+            </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="col-4 mt-2 mb-2">
+        
+        <!-- popup -->
+        <div class="published-schedule-popup">
+            <div>
+                <div class="header">
+                    Published Schedule  
+                    <div class="hr"></div>
+                </div>
+                <div class="content-wrapper">
+                    <div class="table-wrapper">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                                <tr>
+                                    <th rowspan="2"> Office/Division </th>
+                                    <th rowspan="2">Auction Date</th>
+                                    <th rowspan="2">E-auction Number</th>
+                                    <th colspan="3">Total Lots</th>
+                                    <th rowspan="3">Start Time</th>
+                                    <th rowspan="3">End Time</th>
+                                </tr>
+                                <tr>
+                                    <th>Lots</th>
+                                    <th>Qty</th>
+                                    <th>Vol</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> <tr>
+                                    <td>Gondia</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>        
+            </div>
+        </div>
+    </div>
+
+    <div class="material-summery-wrapper mt-4" >
+        <div class="row" style="width: 100%;">
+            <div class="col-5"> </div>
+            <div class="col-7" style="text-align: right;">
+                <button  class="custome-icon-btn-primary mb-1" >
+                    <span class="icon"><i class="fa-sharp fa-solid fa-file-export"></i></span>
+                    <span class="text">Export Information</span>
+                </button>
+            </div>
+        </div>
+      
+        <div class="row" style="width: 100%;">
+            <div class="col-10 m-auto">
+                <div class="heading"><u>Material Status:</u></div>
+                <div class="table-wrapper" id="material-summery" style="max-height: 200px;">
+                    <table class="table table-bordered">
+                        <thead class="text-center">
+                            <tr>
+                                <th rowspan="2">Auction Date</th>
+                                <th rowspan="2">e-Auction No.</th>
+                                <th rowspan="2">Sub-Office/Depot</th>
+                                <th rowspan="2">Material</th>
+                                <th rowspan="2">Species</th>
+                                <th colspan="3">New</th>
+                                <th colspan="3">Withdrown</th>
+                                <th colspan="3">Resale Lots</th>
+                                <th colspan="3">Total Lots</th>
+                            </tr>
+                            <tr>
+                                <th style="width: 50px;">Lots</th>
+                                <th style="width: 50px;">Quantity</th>
+                                <th style="width: 50px;">Vol</th>
+                                <th style="width: 50px;">Lots</th>
+                                <th style="width: 50px;">Quantity</th>
+                                <th style="width: 50px;">Vol</th>
+                                <th style="width: 50px;">Lots</th>
+                                <th style="width: 50px;">Quantity</th>
+                                <th style="width: 50px;">Vol</th>
+                                <th style="width: 50px;">Lots</th>
+                                <th style="width: 50px;">Quantity</th>
+                                <th style="width: 50px;">Vol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>27-10-2001</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="5" style="font-size: 12px; text-align: right;font-weight: bold;">Total</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auctionl-plan-wrapper mt-4" >
+        <div class="heading"><u>Auction Plan:</u>
+        </div>
+        <div class="table-wrapper " id="auction-plan" style="max-height: 200px;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sub-Office/ Depot</th>
+                        <th>Material</th>
+                        <th>Species</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Total Lots</th>
+                        <th>Lots Per Batch</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>Used Time</th>
+                        <th>No. Of Extension</th>
+                        <th>Ext. Time</th>
+                        <th>Extension Time Limit</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gondia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+ 
+
+
+</div>
