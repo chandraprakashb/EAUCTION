@@ -1,0 +1,759 @@
+<script>
+  function Notice() {
+    this.mainSetup = () => {
+      this.manageForms();
+      this.renderNoticeTable();
+    };
+
+    // Manage Forms
+    this.manageForms = () => {
+      this.addNoticeForm = document.getElementById("notice-form");
+      this.modifyNoticeForm = document.getElementById("modify-notice-form");
+      addFormValidations("notice-form", this.addNotice);
+      addFormValidations("modify-notice-form", this.modifyNotice);
+
+      $("#show-add-notice").click(() => {
+        this.formAppearance("addnotice");
+        // $(this.addNoticeForm).toggle();
+      });
+      $(".close-add-notice").click(() => FadeOut(this.addNoticeForm));
+      $(".close-modify-notice").click(() => FadeOut(this.modifyNoticeForm));
+
+      // Manage Form By Expiry date
+      document.forms['notice-form'].dispstatus.forEach(radio => {
+        radio.addEventListener('change', () => {
+          
+          switch(document.forms['notice-form'].dispstatus.value){
+            case "calendar":
+              $(".expiry-date").fadeIn();
+              break;  
+            case "permanant":
+              $(".expiry-date").fadeOut();
+              break;
+          }
+        })
+      });
+
+      document.forms['modify-notice-form'].dispstatus.forEach(radio => {
+        radio.addEventListener('change', () => {
+          
+          switch(document.forms['modify-notice-form'].dispstatus.value){
+            case "calendar":
+              $("#modify-notice-form .expiry-date").fadeIn();
+              break;  
+            case "permanant":
+              $("#modify-notice-form .expiry-date").fadeOut();
+              break;
+          }
+        })
+      });
+      // Manage Form By Expiry date
+
+      new characterSetter({
+        minOrMax:"max",
+        numberOfCars:100,
+        inputSelectore:"#notice-heading",
+        setMsgSelector:".notice-heading-msg"
+      })
+      new characterSetter({
+        minOrMax:"max",
+        numberOfCars:200,
+        inputSelectore:"#notice-instrunctions",
+        setMsgSelector:".instruction-smg"
+      })
+
+      FadeOut(this.addNoticeForm,this.modifyNoticeForm);
+    };
+
+    this.formAppearance = (usefor) => {
+      switch (usefor) {
+        case "addnotice":
+          FadeIn(this.addNoticeForm);
+          FadeOut(this.modifyNoticeForm);
+          break;
+        case "modifynotice":
+          FadeIn(this.modifyNoticeForm);
+          FadeOut(this.addNoticeForm);
+          break;
+      }
+    };
+
+    //End Manage Forms
+
+    this.addNotice = () => {};
+
+    this.modifyNotice = () => {};
+
+    // Render Notice Table
+    this.renderNoticeTable = () => {
+        this.modifyBtn = document.getElementById('show-modify');
+        this.deleteBtn = document.getElementById('delete-button');
+        this.checkAll = document.querySelector('.checkAll');
+
+        this.checkAll.addEventListener('click',()=>{
+            var checkes = Array.from(document.querySelectorAll('#notices-table .check'));
+            if(this.checkAll.checked === true){
+                checkes.forEach(check=>{
+                    check.checked = true;                   
+                  })
+                }else{
+                  checkes.forEach(check=>{
+                    check.checked = false;
+                  })
+                }
+            this.deleteEnabler();
+            this.modifyEnabler();
+        })
+        renderTableRow('#notices-table',"#notice-table-row",[
+            {
+                SRNO:"1",
+                OFC_NM:"gondia",
+                HEADING:"heading",
+                NOTICE_TYPE:"Auction Notice",
+                INSCNS:"Instrunctions",
+                ENON:"Prakash",
+                DATE_TIME:"2022-12-12 12:05:56",
+                EXPIRY_DATE:"-",
+                DISPLAY_STATUS:"permanent",
+            },
+            {
+                SRNO:"2",
+                OFC_NM:"gondia",
+                HEADING:"heading",
+                NOTICE_TYPE:"Circular",
+                INSCNS:"Instrunctions",
+                ENON:"Prakash",
+                DATE_TIME:"2022-12-12 12:05:56",
+                EXPIRY_DATE:"2022-12-30",
+                DISPLAY_STATUS:"calendar",
+            },
+            {
+                SRNO:"3",
+                OFC_NM:"gondia",
+                HEADING:"heading",
+                NOTICE_TYPE:"Portal Changes",
+                INSCNS:"Instrunctions",
+                ENON:"Prakash",
+                DATE_TIME:"2022-12-12 12:05:56",
+                EXPIRY_DATE:"-",
+                DISPLAY_STATUS:"permanent",
+            },
+           
+        {      
+            SRNO:"4", 
+            OFC_NM:"nagpur",
+            HEADING:"heading",
+            NOTICE_TYPE:"Auction Notice",
+            INSCNS:"Instrunctions",
+            ENON:"Prakash",
+            DATE_TIME:"2022-12-12 12:05:56",
+            EXPIRY_DATE:"-",
+            DISPLAY_STATUS:"permanent",
+        },
+        {
+            SRNO:"5",
+            OFC_NM:"nagpur",
+            HEADING:"heading",
+            NOTICE_TYPE:"Circular",
+            INSCNS:"Instrunctions",
+            ENON:"Prakash",
+            DATE_TIME:"2022-12-12 12:05:56",
+            EXPIRY_DATE:"2022-12-30",
+            DISPLAY_STATUS:"calendar",
+        },
+        {
+            SRNO:"6",
+            OFC_NM:"nagpur",
+            HEADING:"heading",
+            NOTICE_TYPE:"Portal Changes",
+            INSCNS:"Instrunctions",
+            ENON:"Prakash",
+            DATE_TIME:"2022-12-12 12:05:56",
+            EXPIRY_DATE:"-",
+            DISPLAY_STATUS:"permanent",
+       
+     },{
+      SRNO:"7", 
+        OFC_NM:"bhandara",
+        HEADING:"heading",
+        NOTICE_TYPE:"Auction Notice",
+        INSCNS:"Instrunctions",
+        ENON:"Prakash",
+        DATE_TIME:"2022-12-12 12:05:56",
+        EXPIRY_DATE:"-",
+        DISPLAY_STATUS:"permanent",
+    },
+    {
+        SRNO:"8",
+        OFC_NM:"bhandara",
+        HEADING:"heading",
+        NOTICE_TYPE:"Circular",
+        INSCNS:"Instrunctions",
+        ENON:"Prakash",
+        DATE_TIME:"2022-12-12 12:05:56",
+        EXPIRY_DATE:"2022-12-30",
+        DISPLAY_STATUS:"calendar",
+    },
+    {
+        SRNO:"9",
+        OFC_NM:"bhandara",
+        HEADING:"heading",
+        NOTICE_TYPE:"Portal Changes",
+        INSCNS:"Instrunctions",
+        ENON:"Prakash",
+        DATE_TIME:"2022-12-12 12:05:56",
+        EXPIRY_DATE:"-",
+        DISPLAY_STATUS:"permanent",
+   
+     },{
+      SRNO:"10",   
+    OFC_NM:"pune",
+    HEADING:"heading",
+    NOTICE_TYPE:"Auction Notice",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"-",
+    DISPLAY_STATUS:"permanent",
+},
+{
+    SRNO:"11",
+    OFC_NM:"pune",
+    HEADING:"heading",
+    NOTICE_TYPE:"Circular",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"2022-12-30",
+    DISPLAY_STATUS:"calendar",
+},
+{
+    SRNO:"12",
+    OFC_NM:"pune",
+    HEADING:"heading",
+    NOTICE_TYPE:"Portal Changes",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"-",
+    DISPLAY_STATUS:"permanent",
+},{
+    SRNO:"13",
+    OFC_NM:"laatoor",
+    HEADING:"heading",
+    NOTICE_TYPE:"Auction Notice",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"-",
+    DISPLAY_STATUS:"permanent",
+},
+{
+    SRNO:"14",
+    OFC_NM:"laatoor",
+    HEADING:"heading",
+    NOTICE_TYPE:"Circular",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"2022-12-30",
+    DISPLAY_STATUS:"calendar",
+},
+{
+    SRNO:"15",
+    OFC_NM:"laatoor",
+    HEADING:"heading",
+    NOTICE_TYPE:"Portal Changes",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"-",
+    DISPLAY_STATUS:"permanent",
+},{
+    SRNO:"16",
+    OFC_NM:"Aagra",
+    HEADING:"heading",
+    NOTICE_TYPE:"Auction Notice",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"-",
+    DISPLAY_STATUS:"permanent",
+},
+{
+    SRNO:"17",
+    OFC_NM:"Aagra",
+    HEADING:"heading",
+    NOTICE_TYPE:"Circular",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"2022-12-30",
+    DISPLAY_STATUS:"calendar",
+},
+{
+    SRNO:"18",
+    OFC_NM:"Aagra",
+    HEADING:"heading",
+    NOTICE_TYPE:"Portal Changes",
+    INSCNS:"Instrunctions",
+    ENON:"Prakash",
+    DATE_TIME:"2022-12-12 12:05:56",
+    EXPIRY_DATE:"-",
+    DISPLAY_STATUS:"permanent",
+}
+],this.rowLogic);
+
+        this.modifyBtn.addEventListener('click',()=>{
+          var data = JSON.parse((document.querySelector('#notices-table .check:checked')).closest('tr').dataset.data);
+          this.modifyDataFiller(data);
+        });
+
+    };
+    
+    this.modifyDataFiller = (data) =>{
+      this.checkparmanant = document.getElementById('permanant1');
+      this.checkCalendar  = document.getElementById('calendar1');
+      this.formAppearance('modifynotice');
+      formDataFiller("#modify-notice-form",data);
+
+      if(data.DISPLAY_STATUS === 'permanent'){
+        this.checkparmanant.checked = true;
+        this.checkparmanant.dispatchEvent(new Event('change'))
+      }
+
+      if(data.DISPLAY_STATUS === 'calendar'){
+        this.checkCalendar.checked = true;
+        this.checkCalendar.dispatchEvent(new Event('change'))
+      }
+
+    }
+
+    this.rowLogic = (row,cells,data) =>{
+        for(let cell of cells){
+        var cellInfo = cell.dataset.key;
+
+        if(cellInfo === 'CHECK'){
+            var check = cell.querySelector('input');
+            check.addEventListener('change',this.manageSingleCheck.bind(null,check))
+            continue;
+        }
+
+        if(cellInfo === 'DELETE') continue;
+    
+        cell.textContent = data[cellInfo]
+      }
+
+      row.dataset.data = JSON.stringify(data);
+    }
+
+    this.manageSingleCheck  = (check) =>{
+        this.modifyEnabler();
+        this.deleteEnabler();
+    }
+
+    this.modifyEnabler = () =>{
+        var checkes = Array.from(document.querySelectorAll('#notices-table .check'));
+        console.log(checkes);
+        if((checkes.filter(check=>check.checked === true)).length === 1){
+            this.modifyBtn.disabled = false;
+        }else{
+            this.modifyBtn.disabled = true;
+        }
+    }
+    this.deleteEnabler = () =>{
+      var checkBoxes = Array.from(document.querySelectorAll('#notices-table .check'));
+      var checked    = checkBoxes.filter((checkbox)=>checkbox.checked === true) 
+      if(checked.length !== 0) {
+        this.deleteBtn.disabled = false
+        console.log(checked.length)
+      }else{
+        console.log(checked.length)
+        this.deleteBtn.disabled = true; 
+      };
+    }
+    // End Render Notice Table
+
+    this.mainSetup();
+  }
+
+  new Notice();
+</script>
+
+<style>
+  .radio-label {
+    color: rgb(10, 10, 156);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .action-btns {
+    text-align: right;
+  }
+
+  .action-btns div {
+    margin-left: auto;
+    width: 13%;
+    padding-top: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #fff;
+    -webkit-box-shadow: 4px 7px 26px 1px rgba(63, 106, 216, 1);
+    -moz-box-shadow: 4px 7px 26px 1px rgba(63, 106, 216, 1);
+    box-shadow: 4px 7px 26px 1px rgba(63, 106, 216, 1);
+  }
+
+  .table-wrapper {
+    -webkit-box-shadow: 4px 7px 22px 0px rgba(63, 106, 216, 1);
+    -moz-box-shadow: 4px 7px 22px 0px rgba(63, 106, 216, 1);
+    box-shadow: 4px 7px 22px 0px rgba(63, 106, 216, 1);
+  }
+
+
+
+  .display_status{
+    text-transform: lowercase;
+  }
+
+
+  .delete{
+    font-size: 16px;
+    color: maroon;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: 0.4s;
+  }
+
+  .delete:hover{
+    opacity: 1;
+  }
+
+  .custome-icon-btn-primary:disabled{
+    background-color: rgb(252, 245, 245) !important;
+  }
+</style>
+
+<div class="auction-plan">
+  <div class="row header" style="width: 100%">
+    <div class="col-5 m-auto">
+      <h4 class="text-center">
+        <span class="heading"><strong>Notice</strong></span>
+        <span class="icon">
+          <i class="fa-solid fa-circle-exclamation"></i>
+        </span>
+      </h4>
+      <hr />
+    </div>
+  </div>
+
+  <div class="mt-2">
+    <u>Create New Notice:</u>
+    <button class="custome-icon-btn-primary" id="show-add-notice">
+      <span class="icon"><i class="fa-solid fa-square-plus"></i></span>
+      <span class="text">Click Here</span>
+    </button>
+  </div>
+  <form class="template-form col-8 notice-form" id="notice-form">
+    <div class="row">
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Office/Division Name:</label>
+          </div>
+          <div class="col-9">
+            <select name="" id="">
+              <option value="gondia">Gondia</option>
+              <option value="nagpur">Nagpur</option>
+              <option value="bhandara">Bhandara</option>
+              <option value="pune">Pune</option>
+              <option value="laatoor">Laatoor</option>
+              <option value="Aagra">Aagra</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Notice Type:</label>
+          </div>
+          <div class="col-9">
+            <select name="" id="">
+              <option value="">Auction Notice</option>
+              <option value="">Circular</option>
+              <option value="">Portal Changes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Notice Heading:</label>
+          </div>
+          <div class="col-9">
+            <input type="text" required id="notice-heading" />
+            <span class="notice-heading-msg"></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Upload File:</label>
+          </div>
+          <div class="col-5"><input type="file" required /></div>
+          <div class="col-4">
+            <button class="custome-btn-outline-primary">
+              <span class="text">view Document Preview</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Display Expiry Date:</label>
+          </div>
+          <div class="col-5">
+            <div class="row">
+              <div class="col-6">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="dispstatus"
+                  value="permanant"
+                  id="permanant"
+                />
+                <label class="radio-label" for="permanant"> permanent </label>
+              </div>
+              <div class="col-6">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="dispstatus"
+                  value="calendar"
+                  id="calendar"
+                />
+                <label class="radio-label" for="calendar"> Calendar </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <input type="date" class="expiry-date" style="display:none;"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Instruction Notice:</label>
+          </div>
+          <div class="col-9">
+            <textarea type="text" rows="8" required id="notice-instrunctions"></textarea>
+            <span class="instruction-smg"></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-9">
+            <button type="reset" class="custome-icon-btn-outline-primary">
+              <span class="icon"><i class="fa-solid fa-rotate-right"></i></span>
+              <span class="text">Reset Form</span>
+            </button>
+            <button type="submit" class="custome-icon-btn-primary">
+              <span class="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+              <span class="text">Submit Notice</span>
+            </button>
+            <button
+              type="button"
+              class="custome-icon-btn-outline-primary close-add-notice"
+            >
+              <span class="icon"><i class="fa-solid fa-close"></i></span>
+              <span class="text">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form class="template-form col-8 modify-notice-form" id="modify-notice-form">
+    <div class="row">
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Office/Division Name:</label>
+          </div>
+          <div class="col-9">
+            <select name="" id="" data-key="OFC_NM">
+              <option value="gondia">Gondia</option>
+              <option value="nagpur">Nagpur</option>
+              <option value="bhandara">Bhandara</option>
+              <option value="pune">Pune</option>
+              <option value="laatoor">Laatoor</option>
+              <option value="Aagra">Aagra</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Notice Type:</label>
+          </div>
+          <div class="col-9">
+            <select name="" id="" data-key="NOTICE_TYPE">
+              <option value="Auction Notice">Auction Notice</option>
+              <option value="Circular">Circular</option>
+              <option value="Portal Changes">Portal Changes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Notice Heading:</label>
+          </div>
+          <div class="col-9">
+            <input type="text" required data-key="HEADING"/>
+            
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Upload File:</label>
+          </div>
+          <div class="col-5"><input type="file" required /></div>
+          <div class="col-4">
+            <button class="custome-btn-outline-primary">
+              <span class="text">view Document Preview</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm" data-key="EXPIRY_DATE">Display Expiry Date:</label>
+          </div>
+          <div class="col-5">
+            <div class="row">
+              <div class="col-6">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="dispstatus"
+                  value="permanant"
+                  id="permanant1"
+                />
+                <label class="radio-label" for="permanant1"> Permanent </label>
+              </div>
+              <div class="col-6">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="dispstatus"
+                  value="calendar"
+                  id="calendar1"
+                />
+                <label class="radio-label" for="calendar1"> Calendar </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <input type="date" class="expiry-date modify-expiry-date" data-key="EXPIRY_DATE" style="display:none;"  />
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-row row">
+          <div class="col-3 form-label">
+            <label for="dsg.nm">Instruction Notice:</label>
+          </div>
+          <div class="col-9">
+            <textarea type="text" rows="8" required data-key="INSCNS"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-9">
+            <button type="reset" class="custome-icon-btn-outline-primary">
+              <span class="icon"><i class="fa-solid fa-rotate-right"></i></span>
+              <span class="text">Reset Form</span>
+            </button>
+            <button type="submit" class="custome-icon-btn-primary">
+              <span class="icon"
+                ><i class="fa-solid fa-pen-to-square"></i
+              ></span>
+              <span class="text">Save Changes</span>
+            </button>
+            <button type="button" class="custome-icon-btn-outline-primary close-modify-notice">
+              <span class="icon"
+                ><i class="fa-solid fa-pen-to-square"></i
+              ></span>
+              <span class="text">Cancel Edit</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="action-btns">
+    <div>
+      <button class="custome-icon-btn-primary" id="show-modify" disabled>
+        <span class="icon"><i class="fa-solid fa-pen-to-square"></i></span>
+        <span class="text">Modify</span>
+      </button>
+      <button class="custome-icon-btn-primary" id="delete-button" disabled>
+        <span class="icon"><i class="fa-solid fa-trash"></i></span>
+        <span class="text">Delete</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="table-wrapper" style="height: 420px">
+    <table class="table table-bordered" id="notices-table">
+      <thead class="text-center">
+        <tr>
+          <th style="width: 58px">Sr. No.</th>
+          <th style="width: 40px"><input type="checkbox" class="checkAll"/></th>
+          <th>Office/Division</th>
+          <th>Heading</th>
+          <th>Notice Type</th>
+          <th>Instrunctions</th>
+          <th>Entered By</th>
+          <th>Save Date & Time</th>
+          <th style="width: 90px">Expiry Date</th>
+          <th style="width: 110px">Display Status</th>
+          <th style="width: 50px">Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <template id="notice-table-row">
+    <tr>
+      <td data-key="SRNO"></td>
+      <td data-key="CHECK"><input type="checkbox"  class="check"/></td>
+      <td data-key="OFC_NM"></td>
+      <td data-key="HEADING"></td>
+      <td data-key="NOTICE_TYPE"></td>
+      <td data-key="INSCNS"></td>
+      <td data-key="ENON"></td>
+      <td data-key="DATE_TIME"></td>
+      <td data-key="EXPIRY_DATE"></td>
+      <td data-key="DISPLAY_STATUS" class="display_status"></td>
+      <td data-key="DELETE" class="delete"><i class="fa-solid fa-trash"></i></td>
+    </tr>
+  </template>
+</div>

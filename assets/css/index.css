@@ -413,3 +413,10 @@ aside .link:hover aside{
   }
 
 /* End Main  */
+
+
+.maxmin-info{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+}

@@ -54,6 +54,8 @@ function getOptions(optionData,textKey,valueKey,defaultText,defaultValue){
 // Utils
 function formDataFiller (form,data,manageCheckCallback){
     var inputs = [...document.querySelectorAll(form + ' input'),...document.querySelectorAll(form + ' select'),...document.querySelectorAll(form + ' textarea')]
+
+    document.querySelector(form).reset();
         for(let key in data){
             var input = inputs.find(input => input.dataset.key === key);
               if(input){
@@ -62,7 +64,8 @@ function formDataFiller (form,data,manageCheckCallback){
                   manageCheckCallback(input);
                 }
               }
-        }   
+        }  
+        
 }
 
 function renderTableRow(tableSelector,rowTemplate,tabledata,logicCallbk){
@@ -84,5 +87,43 @@ function renderTableRow(tableSelector,rowTemplate,tabledata,logicCallbk){
         if(logicCallbk) logicCallbk(row,cells,data);
     });
 
+}
+
+/**
+ * Config Properties And Methods
+ * minOrMax: 'min' OR 'max'
+ * numberOfCars:1 OR More
+ * inputSelectore:input id or class
+ * setMsgSelector:span or div where the message will shown 
+ */
+
+function characterSetter(config){
+    this.minOrMax        = config.minOrMax;
+    this.numberOfCars    = config.numberOfCars;   
+    this.inputSelectore  = document.querySelector(config.inputSelectore);       
+    this.setMsgSelector  = document.querySelector(config.setMsgSelector); 
+    
+    
+    this.mainSetup  = () =>{
+        this.inputSelectore.setAttribute('maxlength',this.numberOfCars)
+        this.setMsgSelector.classList.add('maxmin-info')
+        this.inputSelectore.addEventListener('click',this.manageChange);
+        this.inputSelectore.addEventListener('mouseover',this.manageChange);
+        this.inputSelectore.addEventListener('change',this.manageChange);
+        this.inputSelectore.addEventListener('keypress',this.manageChange);
+        this.inputSelectore.addEventListener('keyup',this.manageChange);
+    }
+
+   
+   this.manageChange = () =>{
+
+    if(this.inputSelectore.value.length === this.numberOfCars){
+        // this.inputSelectore.disabled =true;
+    }
+
+    this.setMsgSelector.textContent = `${this.inputSelectore.value.length}/${this.numberOfCars}` ;
+   }
+
+   this.mainSetup()
 }
 

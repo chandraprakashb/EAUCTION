@@ -6,8 +6,8 @@ function ManageIndexHtml () {
         this.manageHelp();
         this.loadUserLinks();
         this.manageDefaulterStatus();
-        // this.pageLoad('auctionplan');
-        this.pageLoad('usermnage');
+        this.pageLoad('notice');
+        // this.pageLoad('usermnage');
         
     } 
 
