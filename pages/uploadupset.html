@@ -1,15 +1,891 @@
+<script>
+    function UploadUpset(){
+
+        this.mainSetup = () =>{
+
+            this.dummyData =[ {
+                    "SrNo":1,
+                    "LotNo":101,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":102,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":103,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":104,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":105,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":106,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":107,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":108,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":109,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                },
+                {
+                    "SrNo":1,
+                    "LotNo":110,
+                    "MaterialSpecies":"Timber/Chiran",
+                    "CategoryGirthLength":"cat(girth)/lenght",
+                    "VolQtyBundleQTLKG":50,
+                    "MaterialStatus":"matstatus",
+                    "SaleUnit":'QTL',
+                    "ReserveUpsetPrice":1,
+                    "ReserveUpsetPriceRate":1,
+                    "AuctionInitialPrice":1,
+                    "AuctionInitialPriceRate":1,
+                    "BidIncr":1,
+                    "AboveBelow":1,
+                    "ViewImageDelete":1
+                }
+            ]
+
+            this.searchSetup();
+            this.tableSetup();
+            this.printTableRows();
+        }   
+
+        // Manage Search 
+        this.searchSetup = () => {
+            addFormValidations('search-form',this.searchData);
+            addFormValidations('manage-auction-price',this.manageAuctionPrice);
+            this.manageShowHideSearch();
+        }
+
+        this.searchData = () =>{
+            this.printTableRows();
+        }
+
+        this.manageAuctionPrice = () =>{
+            var data        = new FormData(document.getElementById('manage-auction-price'));
+            var incrReduce  = data.get('increase.reduce'); 
+            var to          = parseInt(data.get('to')); 
+            var from        = parseInt(data.get('from')); 
+
+            if(to < from){
+                Toaster('error','Invalid Values !',"Please Enter Valid Values !");
+                return;
+            }
+
+            if(to === from){
+                this.calculateAuctionPrice(incrReduce,[to,to]);
+            }else{
+
+                this.calculateAuctionPrice(incrReduce,[to,from]);
+            }
+           
+        }
+
+        this.manageShowHideSearch = () =>{
+            var searchForm  = document.querySelector(".search-form"); 
+            var closeSearch = document.querySelector('.close-search-btn');
+            var openSearch  = document.querySelector('.show-search-btn');
+
+            FadeOut(openSearch);
+
+            closeSearch.addEventListener('click',()=>{
+                FadeOut(searchForm);
+                FadeIn(openSearch)
+            })
+
+            openSearch.addEventListener('click',()=>{
+                FadeIn(searchForm);
+                 FadeOut(openSearch);
+            })
+        }
+
+        this.calculateAuctionPrice = (increaseOrReduce,data) =>{
+            var tableRows               =  document.querySelectorAll('.upset-wrapper table tbody tr');
+
+            tableRows.forEach(row=>{
+                var upsetPriceInput         =  row.querySelector('.upset-price-input');
+                var upsetPrice              =  row.querySelector('.upset-price');
+                var InititalPriceInput      =  row.querySelector('.initial-price-input');
+                var InititalPrice           =  row.querySelector('.initial-price');
+                var InititalPriceRateInput  =  row.querySelector('.initial-price-rate-input');
+                var InititalPriceRate       =  row.querySelector('.initial-price-rate');
+                var saleUnit                =  parseInt(row.querySelector('.sale-unit').textContent);
+                var aboveBelow              =  row.querySelector('.above-below');
+
+                switch(increaseOrReduce){
+                    case 'increase':
+                        if(upsetPriceInput){
+                            var upsetValue                  = parseInt(upsetPriceInput.value);
+                            var percentage                  = this.getRndInteger(data[0],data[1]);
+                            var percentageValue             = (upsetValue / 100) * percentage;
+                                InititalPriceInput.value    = (upsetValue + percentageValue).toFixed();
+                                aboveBelow.textContent      = (percentage);
+                                InititalPriceInput.click();
+                                
+                        }else if(upsetPrice){
+                            var upsetValue                      = parseInt(upsetPrice.textContent);
+                            var percentage                      = this.getRndInteger(data[0],data[1]);
+                            var percentageValue                 = (upsetValue / 100) * percentage;
+                                InititalPriceInput.textContent  = (upsetValue + percentageValue).toFixed();
+                                aboveBelow.textContent          = (percentage);
+                                InititalPriceRateInput.click();
+                        }
+                    break;
+
+                    case 'reduce':
+                        if(upsetPriceInput){
+                            var upsetValue                  = parseInt(upsetPriceInput.value);
+                            var percentage                  = this.getRndInteger(data[0],data[1]);
+                            var percentageValue             = (upsetValue / 100) * percentage;
+                                InititalPriceInput.value    = (upsetValue - percentageValue).toFixed();
+                                aboveBelow.textContent      = (percentage);
+                                console.log(aboveBelow.textContent);
+                                InititalPriceInput.click();
+                            
+                        }else if(upsetPrice){
+                            var upsetValue                      = parseInt(upsetPrice.textContent);
+                            var percentage                      = this.getRndInteger(data[0],data[1]);
+                            var percentageValue                 = (upsetValue / 100) * percentage;
+                                InititalPriceInput.textContent  = (upsetValue - percentageValue).toFixed();
+                                aboveBelow.textContent          = (percentage);
+                                InititalPriceRateInput.click();
+                        }
+
+                    break;
+                }
+
+            })
+                   
+        }
+        // End Manage Search 
+
+        //Manage Table 
+        this.tableSetup = () =>{
+            var saveFinalPriceBtn = document.getElementById('save-final-price');
+            var closeModal = document.getElementById('close-btn');
+            this.confirmationModal = new Modal({selector:'#confirmation-modal',wrapperCss:"width:60%;"});
+            saveFinalPriceBtn.addEventListener('click',this.saveFinalPrice);
+            closeModal.addEventListener('click',this.confirmationModal.showModal)
+        
+        }
+
+        this.printTableRows = () =>{
+            // this.priceType = 'lotwise';
+            var tableBody = document.querySelector('table tbody');
+            var reqData= new FormData(document.getElementById('search-form'));
+
+            this.priceType =  reqData.get('price.type');
+
+            tableBody.innerHTML = '';
+
+            this.dummyData.forEach(data=>{
+                // tableBody.innerHTML +=  this.renderTableRow(data,reqData.get('price.type'));
+                tableBody.innerHTML +=  this.renderTableRow(data,this.priceType);
+
+            });
+
+            this.managePerformCalculation(reqData.get('price.type'));
+        }
+
+        this.managePerformCalculation = (pricetype) => {
+            var allRowInputs = document.querySelectorAll('table tbody input');
+                allRowInputs.forEach(rowinput=>{
+                    rowinput.addEventListener('change',()=>{
+                        this.performCalculation(rowinput.closest('tr'));
+                    })
+                    rowinput.addEventListener('keypress',()=>{
+                        this.performCalculation(rowinput.closest('tr'));
+                    })
+                    rowinput.addEventListener('click',()=>{
+                        this.performCalculation(rowinput.closest('tr'));
+                    })
+                })
+        }
+
+        this.performCalculation = (row) =>{
+            var formData = new FormData(document.getElementById('manage-auction-price'));
+            var action   = formData.get('increase.reduce');
+            var from     = formData.get('from');
+            var to       = formData.get('to');
+
+            var saleUnitInput   = row.querySelector('.sale-unit');
+            var saleUnit        = parseInt(saleUnitInput.textContent);
+            var bidIncrInput    = row.querySelector('.bit-incr');
+            var aboveBelowInput = row.querySelector('.above-below');
+            var aboveBelow; 
+
+            switch(this.priceType){
+                case 'lotwise':
+                        var upsetPriceInput       = row.querySelector('.upset-price-input');
+                        var upsetPrice            = parseInt(upsetPriceInput.value);
+                        var upsetPriceRate        = row.querySelector('.upset-price-rate');
+                        var initialPriceInput     = row.querySelector('.initial-price-input');
+                        var initialPrice          = parseInt(initialPriceInput.value);
+                        var initialPriceRate      = row.querySelector('.initial-price-rate');
+
+                        upsetPriceRate.textContent   =   (upsetPrice / saleUnit).toFixed();
+
+                        if(from && to){
+                            var percentage = this.getRndInteger(from,to);
+                            switch(action){
+                                case 'increase':
+                                        initialPriceInput.value = (upsetPrice + ((upsetPrice/100) * percentage)).toFixed();
+                                        initialPriceRate.textContent = (parseInt(initialPriceInput.value) /  saleUnit).toFixed();
+                                        console.log(percentage);
+                                        aboveBelowInput.textContent = parseInt(percentage);
+                                    break;
+                                case 'reduce':
+                                        initialPriceInput.value = upsetPrice - ((upsetPrice/100) * percentage);
+                                        initialPriceRate.textContent = (parseInt(initialPriceInput.value) /  saleUnit).toFixed();
+                                        console.log(percentage);
+                                        aboveBelowInput.textContent = "-"+parseInt(percentage);
+                                    break;
+                            }
+                        }else{
+                            initialPriceRate.textContent =   (initialPrice / saleUnit).toFixed();
+                            aboveBelow = (initialPrice - upsetPrice);
+                            aboveBelow = (aboveBelow * 100) / upsetPrice;
+                            aboveBelowInput.textContent = aboveBelow.toFixed();
+                        }
+                        bidIncrInput.value = this.getBidincr(upsetPrice);
+                    break;  
+
+                case 'ratewise':
+                        var upsetPriceRateInput   = row.querySelector('.upset-price-rate-input');
+                        var upsetPriceRate        = parseInt(upsetPriceRateInput.value);
+                        var upsetPrice            = row.querySelector('.upset-price');
+                        var initialPriceRateInput = row.querySelector('.initial-price-rate-input');
+                        var initialPriceRate      = parseInt(initialPriceRateInput.value);
+                        var initialPrice          = row.querySelector('.initial-price');
+
+                        upsetPrice.textContent = (upsetPriceRate * saleUnit).toFixed(); 
+
+                        if(from && to){
+                            var percentage = this.getRndInteger(from,to);
+                            var upstPrc = parseInt(upsetPrice.textContent)
+                            switch(action){
+                                case 'increase':
+                                    initialPrice.textContent = (upstPrc + ( (upstPrc/100) * percentage )).toFixed();
+                                    initialPriceRateInput.value = (parseInt(initialPrice.textContent) / saleUnit).toFixed();
+                                    aboveBelowInput.textContent = (parseInt(percentage)).toFixed(); 
+                                    break;
+                                case 'reduce':
+                                    initialPrice.textContent = upstPrc - ( (upstPrc/100) * percentage );
+                                    initialPriceRateInput.value = (parseInt(initialPrice.textContent) / saleUnit).toFixed();
+                                    aboveBelowInput.textContent = "-"+(parseInt(percentage)).toFixed();
+                                    break;
+                            }
+                        }else{
+
+                            initialPrice.textContent = (initialPriceRate * saleUnit).toFixed(); 
+                            aboveBelow = (parseInt(initialPrice.textContent) - parseInt(upsetPrice.textContent));
+                            aboveBelow = (aboveBelow * 100) / parseInt(upsetPrice.textContent);
+                            aboveBelowInput.textContent = aboveBelow.toFixed();
+                        }
+
+                        bidIncrInput.value = this.getBidincr(upsetPrice);
+
+                    break;
+           }
+        }
+        this.getBidincr  = (upsetPrice) =>{
+            var bidIncr;
+            this.bidIncreament = [
+                {
+                    minimum:0,
+                    maximum:500,
+                    bidIncr:300
+                },
+                {
+                    minimum:500,
+                    maximum:1000,
+                    bidIncr:600
+                },
+                {
+                    minimum:1000,
+                    maximum:1500,
+                    bidIncr:1200
+                },
+                {
+                    minimum:1500,
+                    maximum:2000,
+                    bidIncr:1800
+                },
+                {
+                    minimum:2000,
+                    maximum:2500,
+                    bidIncr:2400
+                },
+            ]
+
+            this.bidIncreament.forEach(incrdata=>{
+                if(upsetPrice >= incrdata.minimum && upsetPrice <= incrdata.maximum){
+                    bidIncr = incrdata.bidIncr;
+                }
+            })
+
+            return bidIncr;
+        }
+
+        this.saveFinalPrice = () =>{
+            this.confirmationModal.showModal()
+        }
+
+        //End Manage Table 
+
+        // Utility Methods
+        this.renderTableRow = (data,pricetype) =>{
+            var tableRow = '';
+            switch(pricetype){
+                case 'lotwise':
+                    tableRow = `
+                        <tr>
+                            <td>${data.SrNo}</td>
+                            <td>${data.LotNo}</td>
+                            <td>${data.MaterialSpecies}</td>
+                            <td>${data.CategoryGirthLength}</td>
+                            <td><span class="sale-unit">${data.VolQtyBundleQTLKG}</span>/00</td>
+                            <td>${data.MaterialStatus}</td>
+                            <td>${data.SaleUnit}</td>
+                            <td><input type="number" class="upset-price-input" value="${data.ReserveUpsetPrice}"></td>
+                            <td class="upset-price-rate">${data.ReserveUpsetPriceRate}</td>
+                            <td><input type="number" class="initial-price-input" value="${data.AuctionInitialPrice}"></td>
+                            <td class="initial-price-rate">${data.AuctionInitialPriceRate}</td>
+                            <td><input type="number" class="bit-incr" value="${data.BidIncr}"></td>
+                            <td><span class="above-below">${data['AboveBelow']}</span>%</td>
+                            <td class="text-center icon">
+                                <i class="metismenu-icon pe-7s-look"></i>
+                                <i class="metismenu-icon pe-7s-trash"></i>
+                            </td>
+                        </tr>`;
+                    break;
+                case 'ratewise':
+                    tableRow = `
+                        <tr>
+                            <td>${data.SrNo}</td>
+                            <td>${data.LotNo}</td>
+                            <td>${data.MaterialSpecies}</td>
+                            <td>${data.CategoryGirthLength}</td>
+                            <td><span class="sale-unit">${data.VolQtyBundleQTLKG}</span>/00</td>
+                            <td>${data.MaterialStatus}</td>
+                            <td>${data.SaleUnit}</td>
+                            <td class="upset-price">${data.ReserveUpsetPrice}</td>
+                            <td><input type="number" class="upset-price-rate-input" value="${data.ReserveUpsetPriceRate}"></td>
+                            <td class="initial-price">${data.AuctionInitialPrice}</td>
+                            <td><input type="number" class="initial-price-rate-input" value="${data.AuctionInitialPriceRate}"></td>
+                            <td><input type="number" class="bit-incr" value="${data.BidIncr}"></td>
+                            <td><span class="above-below">${data['AboveBelow']}</span>%</td>
+                            <td class="text-center icon">
+                                <i class="metismenu-icon pe-7s-look"></i>
+                                <i class="metismenu-icon pe-7s-trash"></i>
+                            </td>
+                        </tr>`;
+                    break;
+            }
+
+            return tableRow;
+        }
+
+        this.getRndInteger = (min, max) => {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+        // End Utility Methods
+
+    }
+
+    var uploadUpset = new UploadUpset();
+        uploadUpset.mainSetup();
+</script>
+
+<style>
+
+.increase-reduce-price{
+    margin-top: 15px;
+    background-color: red;
+    border-radius: 10px;
+    /* margin-left: 13px !important; */
+    padding: 5px 0px;
+    background-color: rgba(235, 235, 235, 0.925);
+    -webkit-box-shadow: 1px 3px 11px 0px rgba(82,76,255,1);
+    -moz-box-shadow: 1px 3px 11px 0px rgba(82,76,255,1);
+    box-shadow: 1px 3px 11px 0px rgba(82,76,255,1);
+    width: 90%;
+}
+
+.increase-reduce-price label{
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.increase-reduce-price .percentage{
+    color: var(--blue);
+    font-weight: 700;
+}
+
+.increase-reduce-price input{
+    width: 48px;
+}
+
+.total-section{
+    font-size: 12px;
+}
+
+.total-section .label{
+    font-weight: 600;
+}
+
+.upset-wrapper{
+
+    -webkit-box-shadow: 1px 3px 11px 0px rgba(82,76,255,1);
+    -moz-box-shadow: 1px 3px 11px 0px rgba(82,76,255,1);
+    box-shadow: 1px 3px 11px 0px rgba(82,76,255,1);
+}
+
+.show-search-wrapper{
+    text-align: right;
+    margin-top: 20px;
+}
+
+
+</style>
+
+
 <div class="uploadupset-page">
 
-    <div class="row header" style="width:100%">
-        <div class="col-5 m-auto">
-          <h4 class="text-center">
-            <span class="heading"><strong>Upload Upset</strong></span>
-            <span class="icon">
-              <i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i>
-            </span>
-          </h4>
-          <hr>
+  <div class="row header" style="width:100%">
+    <div class="col-5 m-auto">
+      <h4 class="text-center">
+        <span class="heading"><strong>Upload Upset</strong></span>
+        <span class="icons">
+          <i class=" fa-solid fa-arrow-up-from-bracket"></i>
+        </span>
+      </h4>
+      <hr>
+    </div>
+  </div>
+  
+  <form class="needs-validation search-form" id="search-form" novalidate>
+      <div class="row" style="width: 100%;">
+          <div class="col-lg-4 search-input-wrapper col-6">
+            <label for="">Authority Office Name:</label> 
+            <select class=""><option value="">Select</option></select>
+          </div>
+      </div>
+      <div class="row" style="width: 100%;">
+          <div class="col-lg-3 col-6 search-input-wrapper">
+              <label for="">e-Auction Number:</label>
+              <select>
+                <option value="">Select</option>
+              </select>
+          </div>
+          <div class="col-lg-3 col-6  search-input-wrapper">
+            <label for="">Sub Office Name:</label>
+            <select class="" name="sub.Office.name" id="sub-Office-name">
+                <option value="">Select</option>
+            </select>
+          </div>
+          <div class="col-lg-3 col-6 search-input-wrapper">
+            <label for="">Material Type:</label>
+            <select class="" name="material-type" id="material-type">
+                <option value="">Select</option>
+            </select>
+          </div>
+          <div class="col-lg-3 col-6 search-input-wrapper">
+            <label for="">Material Status:</label>
+            <select class="" name="material.status" id="material-status">
+                <option value="">Select</option>
+            </select>
+          </div>
+      </div>
+      <div class="row" style="width: 100%;">
+          <div class="col-lg-3 col-6 search-input-wrapper">
+            <label for="">Species:</label>
+            <select class="" name="species" id="species">
+                <option value="">Select</option>
+            </select>
+          </div>
+          <div class="col-lg-3 col-6 search-input-wrapper">
+            <label for="">Lot No.:</label>
+            <input type="text" class="" name="lot.no.to" id="lot-no-to" placeholder="i.e. 101,102,103">
+          </div>
+          <div class="col-lg-3 col-6 search-input-wrapper">
+            <label for="">Old Lot Count:</label>
+            <input type="text" class="" name="old.lot.count" id="old-lot-count">
+          </div>
+          <div class="col-lg-3 col-6 search-input-wrapper">
+            <label for="">Upload Status:</label>
+            <select class="" name="sub.Office.name" id="sub-Office-name" style="width: 100px;">
+                <option value="">Select</option>
+                <option value="Reserve/Upset Price Uploaded">Reserve/Upset Price Uploaded</option>
+                <option value="Reserve/Upset Price Not Uploaded">Reserve/Upset Price Not Uploaded</option>
+                <option value="Auction Initial Price Uploaded">Auction Initial Price Uploaded</option>
+                <option value="Auction Initial Price Not Uploaded">Auction Initial Price Not Uploaded</option>
+                <option value="All">All</option>
+            </select>
+          </div>
+      </div>
+      <div class="row" style="width: 100%;">
+          <div class="col-lg-3 col-6 search-input-wrapper">
+            <label for="">Lot Range To:</label>
+            <input type="number" name="eauction.no" id="eauction_no" >
+          </div>
+          <div class="col-lg-3 col-6 search-input-wrapper">
+              <label for="">From:</label>
+              <input type="number" name="eauction.no" id="eauction_no" >
+
+          </div>
+          <div class="col-lg-5 col-6">
+              <div class="row">
+                  <div class="col-3 text-right "><label for="">Price Type:</label></div>
+                  <div class="col-6">
+                      <div class="row">
+                          <div class="col-6">
+                              <div class="">
+                              <input class="" type="radio" name="price.type" id="type-1" value="lotwise" required style="width: auto !important;">
+                              <label class="" for="type-1" >
+                                  Lot Wise
+                              </label>
+                              </div>
+                          </div>
+                          <div class="col-6">
+                              <div class="">
+                                  <input class="" type="radio" name="price.type" id="type-2" value="ratewise" required style="width: auto !important;">
+                                  <label class="" for="type-2">
+                                      Rate Wise
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row mt-1" style="width: 100%;">
+        <hr>
+          <div class="col-6 m-auto ">
+              <div class="text-center "> 
+                  <button class="custome-icon-btn-primary" type="submit">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="text">Search</span>
+                  </button>
+                  <button class="custome-icon-btn-primary" type="reset">
+                    <span class="icon"><i class="fa-solid fa-rotate-right"></i></span>
+                    <span class="text">Reset</span>
+                  </button>
+                  <button class="custome-icon-btn-outline-primary close-search-btn" type="reset">
+                    <span class="icon"><i class="fa-solid fa-circle-xmark"></i></span>
+                    <span class="text">Close</span>
+                  </button>
+              </div>
+          </div>
+      </div>
+  </form>
+
+  <div class="">
+    <form id="manage-auction-price" class="needs-validation" novalidate>
+        <div class="row" style="width: 100%;">
+            <div class="col-9">
+                <div class="increase-reduce-price">
+                    <div class="row">
+                      <div class="col-3">
+                          <label for="">Increase/Reduce:</label>
+                          <select name="increase.reduce">
+                              <option value="increase">+</option>
+                              <option value="reduce">-</option>
+                          </select>
+                      </div>
+                      <div class="col-2">
+                          <label for="">From:</label>
+                          <input type="" name="from" required placeholder="0">
+                          <label for="" class="percentage">%</label>
+                      </div>
+                      <div class="col-2">
+                          <label for="">To:</label>
+                          <input type="" name="to" required placeholder="0">
+                          <label for="" class="percentage">%</label>
+                      </div>
+                      <div class="col-3">
+                          <button class="custome-icon-btn-primary">
+                              <span class="icon"><i class="fa-solid fa-money-bill"></i></span>
+                              <span class="text">Manage Auction Price</span>
+                          </button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+              <div class="show-search-wrapper">
+                <button class="custome-icon-btn-primary show-search-btn" title="Open Serch Form">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="text"></span>
+                </button>
+              </div>
+            </div>
+        </div>
+    </form>
+  </div>
+
+  
+  <section class="table-section mt-3">
+
+    <div class="col-10 m-auto total-section">
+        <div class="row mb-1">
+            <div class="col-3">
+                <span class="label">No. Of Lots:</span>
+                <span class="text"></span>
+            </div>
+            <div class="col-3">
+                <span class="label">Vol(Cu.m.)/QTY/Bundle/Qtl/KG:</span>
+                <span class="text">00/00</span>
+            </div>
+            <div class="col-3">
+                <span class="label">Total R.P./Upset Price:</span>
+                <span class="text"></span>
+            </div>
+            <div class="col-3">
+                <span class="label">Total Auction Price:</span>
+                <span class="text"></span>
+            </div>
         </div>
     </div>
+
+    <div class="upset-wrapper table-wrapper" style="height: 375px;">   
+        <table  class="table table-bordered">
+            <thead class="text-center">
+                  <tr>
+                      <th>Sr.No.</th>
+                      <th>Lot No.</th>
+                      <th>Material / Species</th>
+                      <th>Category(Girth) / Length</th>
+                      <th>(Vol,Bundle,QTL,KG) / Qty</th>
+                      <th>Material Status</th>
+                      <th>Sale Unit</th>
+                      <th>Reserve / Upset Price</th>
+                      <th>Reserve / Upset Price Rate</th>
+                      <th>Auction Initial Price</th>
+                      <th>Auction Initial Price Rate</th>
+                      <th>Bid Incr.</th>
+                      <th>Above / Below%</th>
+                      <th>View Image / Delete</th>
+                  </tr>
+            </thead>
+            <tbody class="text-center"></tbody>
+        </table>
+        <hr>
+    </div>
+    <div class="text-center mt-1">
+        <button class="custome-icon-btn-primary" id="save-final-price">
+            <span class="icon"><i class="fa-solid fa-file-export"></i></span>
+            <span class="text">Save Final Price</span>
+        </button>
+
+        <button class="custome-icon-btn-primary">
+            <span class="icon"><i class="fa-solid fa-file-export"></i></span>
+            <span class="text">Export</span>
+        </button>
+    </div>
+
+    <div id="confirmation-modal">
+        <div>
+            <div class="header">
+                Uploaded Price Status
+                <div class="hr"></div>
+            </div>
+            <div class="content">
+                <div class="table-wrapper">
+                    <table class="table table-bordered">
+                        <thead class="text-center">
+                            <tr>
+                                <th rowspan="3">Sub Office Name</th>
+                                <th rowspan="3">Total Lots</th>
+                                <th colspan="2">Price Uploaded Lot Count</th>
+                                <th colspan="2">Price Not Uploaded Lot Count</th>
+                            </tr>
+                            <tr>
+                                <th rowspan="2">Reserve / Upset Price</th>
+                                <th rowspan="2">Auction Price</th>
+                            </tr>
+                            <tr>
+                                <th>Reserve / Upset Price</th>
+                                <th>Auction Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td>Sub Office 1</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Sub Office 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Sub Office 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Sub Office 4</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Sub Office 5</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <hr>
+                    <button class="custome-icon-btn-primary close-popup">
+                        <span class="icon"><i class="fa-solid fa-thumbs-up"></i></span>
+                        <span class="text">Okey</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </section>
+  
   
   </div>
