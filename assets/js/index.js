@@ -6,117 +6,25 @@ function ManageIndexHtml () {
         this.manageHelp();
         this.loadUserLinks();
         this.manageDefaulterStatus();
-        this.pageLoad('uploadupset');
+        this.pageLoad('runningauction');
         // this.pageLoad('usermnage');
         
     } 
 
     // Manage Render UserInfo 
     this.manageUserInfo = () =>{
-        this.userName = document.querySelector('.userName');
-        this.commodityName = document.querySelector('.commodity-name');
-
-
-        this.userName.textContent = localStorage.getItem('usr.nm');
-        this.commodityName.textContent = localStorage.getItem('comodityName');
+      this.userName = document.querySelector('.userName');
+      this.commodityName = document.querySelector('.commodity-name');
+      this.userName.textContent = localStorage.getItem('usr.nm');
+      this.commodityName.textContent = localStorage.getItem('comodityName');
     }
     // End Render User Info
 
 
     // Manage Render User Links
     this.loadUserLinks = async () =>{
-        // let screenData = await sendHttpRequest('eaucnmanage/getapps',new FormData());
-        // this.renderLinks(screenData.Record);
-        this.renderLinks([
-            {
-              "scid": 5,
-              "value": "office",
-              "text": "Office",
-              "icon": "building-circle-check",
-              "scSort": 1,
-              "scUnder": 0
-            },
-            {
-              "scid": 6,
-              "value": "designation",
-              "text": "Designation",
-              "icon": "person-walking-luggage",
-              "scSort": 0,
-              "scUnder": 1
-            },
-            {
-              "scid": 7,
-              "value": "setting",
-              "text": "Settings",
-              "icon": "gear",
-              "scSort": 0,
-              "scUnder": 0
-            },
-            {
-              "scid": 8,
-              "value": "profile",
-              "text": "Profile",
-              "icon": "id-badge",
-              "scSort": 0,
-              "scUnder": 0
-            },
-            {
-              "scid": 9,
-              "value": "usermnage",
-              "text": "Users",
-              "icon": "users",
-              "scSort": 0,
-              "scUnder": 0
-            },
-            {
-              "scid": 11,
-              "value": "lotentry",
-              "text": "Lot Entry",
-              "icon": "file-lines",
-              "scSort": 0,
-              "scUnder": 0
-            },
-            {
-              "scid": 12,
-              "value": "lotfinalize",
-              "text": "Lot Finalize",
-              "icon": "check-to-slot",
-              "scSort": 0,
-              "scUnder": 0
-            },
-            {
-              "scid": 13,
-              "value": "bidder",
-              "text": "Bidder",
-              "icon": "user-tie",
-              "scSort": 0,
-              "scUnder": 0
-            },
-            {
-              "scid": 14,
-              "value": "createauction",
-              "text": "Create Auction",
-              "icon": "pen-to-square",
-              "scSort": 1,
-              "scUnder": 0
-            },
-            {
-              "scid": 15,
-              "value": "auctionapproved",
-              "text": "Auction Approve",
-              "icon": "thumbs-up",
-              "scSort": 0,
-              "scUnder": 0
-            },
-            {
-              "scid": 16,
-              "value": "uploadupset",
-              "text": "Upload Upset",
-              "icon": "arrow-up-from-bracket",
-              "scSort": 0,
-              "scUnder": 0
-            }
-          ])
+        let screenData = await sendHttpRequest('eaucnmanage/getapps',new FormData());
+        this.renderLinks(screenData.Record);
     }
 
     this.renderLinks = (linkData) =>{

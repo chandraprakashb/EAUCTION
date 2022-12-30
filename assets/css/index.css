@@ -286,7 +286,30 @@ aside{
     left: 0;
     background-color: transparent !important;
     z-index:2;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 75vh;
 }
+
+/* width */
+aside::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  /* Track */
+  aside::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  aside::-webkit-scrollbar-thumb {
+    background: blue;
+  }
+  
+  /* Handle on hover */
+  aside::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 
 aside::after{
     content: '.';
