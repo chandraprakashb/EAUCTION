@@ -1,15 +1,220 @@
-<div class="lotfinalize-page">
 
+<script>
+
+  var mainObject;
+
+
+  (function () { 
+      getAllCommodities();
+      addFormValidations('search-form',searchLots)
+      
+      $("#popup-wrapper").hide();
+  })()
+
+  async function getAllCommodities() {
+      let reqData = new FormData();
+      reqData.append('act', 'getCommodities')
+      let resp = await sendHttpRequest('eaucnmanage/clintsettings', reqData);
+      console.log('commodityData',resp.Records);
+      mainObject = new Main(JSON.parse(resp.Records.find(comid=> comid.CMDTYID === parseInt(localStorage.getItem('comodityId'))).CMDT_INFO))
+      mainObject.commodtyAssembler()
+      searchLots()
+  }
+  
+  async function searchLots(){
+    var reqdata = new FormData();
+    reqdata.append('act', 'srch');
+    reqdata.append('INFO', JSON.stringify(getFormFieldsToSubmit('search-form')));
+    
+    // reqdata.append('INFO',JSON.stringify(formdataToObject(infoData,true)));
+    searchResult = await sendHttpRequest('lotmanage/api/mngLotRegData',reqdata);
+    searchResult.Records.map(record=>{
+        for(var keys in record){
+            record[(""+keys+"").toLowerCase()] = record[keys];
+            delete record[keys];
+        }
+    });
+
+    mainObject.renderTable(searchResult.Records,onView);
+  }
+
+  function onView(data){
+      console.log(data);
+      lotNumber.textContent = data.lot_no
+      searchImages(data.mat_id)
+      $(popup).show()
+  }
+
+  async function searchImages(MATID){
+      var imageData = new FormData();
+          imageData.append('act','srch');
+          imageData.append('INFO',JSON.stringify({MAT_ID:MATID}))
+      var result = await sendHttpRequest('lotmanage/api/mngLotImgs',imageData);
+
+      lotImgGallery.innerHTML = '';
+
+      console.log(result.Records[0]);
+
+      var imgIdex = 1;
+      result.Records.forEach(records=>{
+          var img = `<img src=" http://${records}" alt="image1"  data-subtext=${records}>` ;
+
+          lotImgGallery.innerHTML+=img
+
+      })
+
+  //     HesGallery.setOptions({
+  //     disableScrolling: false,
+  //     hostedStyles: false,
+  //     animations: true,
+  //     showImageCount: true,
+  //     wrapAround: true,
+  //   })
+
+  }
+  function auctionDataManager(){
+      var auctionData = [];
+
+      tableBody.querySelectorAll('tr').forEach(trow=>{
+          var lotInfo = {MAT_ID:trow.querySelector('.MAT_ID').textContent}
+          auctionData.push(lotInfo)
+      });
+
+      return auctionData;
+  }
+  async  function readyForAuction__Handler(){ 
+      var auctionData = new FormData();
+          auctionData.append('act',"fnlz");
+          auctionData.append('info',JSON.stringify({}));
+          await sendHttpRequest('lotmanage/api/finlzLotDta',auctionData)
+  }
+
+  function getFormFieldsToSubmit(frmid , keepNull) {
+      let frmData = {};
+      let dta = new FormData($("#" + frmid)[0]);
+      for (let entrs of dta.entries()) {
+          if (entrs[1] != '')
+              frmData[entrs[0]] = entrs[1];
+      }
+      return frmData;
+  }
+
+  closePopup.addEventListener('click',()=> $(popup).hide());
+  
+</script>
+
+<style>
+   #ready-for-auction-section tr{
+      cursor: pointer;
+  }
+
+  #lot_images_galry img{
+      width: 25%;
+      height: 150px;
+  }
+</style>
+
+<div class="lotfinalize-page">
     <div class="row header" style="width:100%">
         <div class="col-5 m-auto">
           <h4 class="text-center">
             <span class="heading"><strong>Lot Finalize</strong></span>
             <span class="icon">
-              <i class="fa-solid fa-check-to-slot"></i>
+              <i class="fa-sharp fa-solid fa-money-bill-wave"></i>
             </span>
           </h4>
           <hr>
         </div>
     </div>
-  
-  </div>
+
+    <section class="row search-box" id="search-section" style="width:100%">
+      <form id="search-form" class="needs-validation col-12 search-form" novalidate>
+          <div class="col-lg-12 ">
+              <div class="row mb-2 " id="searchable">
+    
+                  <div class="col-lg-3 search-input-wrapper">
+                      <label for="Images">Image Status:</label>
+                      <select class="" name="img" id="imgs">
+                          <option value="">All</option>
+                          <option value="Y">Uploaded</option>
+                          <option value="N">Not Uploaded</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="text-center">
+                <div class="col-lg-12 mt-2">
+                    <hr>
+                    <button class="custome-icon-btn-primary" type="submit" id="submit-search-btn">
+                        <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <span class="text">Search</span>
+                    </button>
+                    <!-- <button class="" type="reset" id="back-btn">
+                        <span class="icon"></span>
+                        <span class="text"></span>
+                    </button> -->
+                </div>
+              </div>
+          </div>
+      </form>
+    </section>
+    
+    <div class="card">
+      <div class="card-body">
+          <div id="lotinfo_table">
+
+          </div>
+      </div>
+    </div>
+    
+    <div id="popup-wrapper">
+      <div id="popup">
+          <div class="row ">
+              <div class="col-10">
+                  <h4 class="">Uploaded Image Gallery</h4>
+              </div>
+              <div class="col-2">
+                  <p class="text-center"><button class="btn btn-danger mt-2" id="close-btn">Close</button></p>
+              </div>
+              <div class="col-12 mt-0">
+                  <hr>
+              </div>
+          </div>
+    
+          <div class="row">
+              <div class="col-6">
+                  <p><strong>Lot Number:</strong> <span class="text-success lot-number"></span></p>
+                  <hr>
+                  
+              </div>
+          </div>
+    
+          <div class="row">
+              <div class="col-lg-10 m-auto">
+                  <div class="row" id="lot_images_galry" style="overflow-y: scroll;height: 250px;">
+    
+                  </div>
+              </div>
+          </div>
+    
+    
+      </div>
+    </div>
+    
+    <template id="auction-row-template">
+      <tr >
+          <td class="LOT_NO" > </td>
+          <td class="SPECIES"></td>
+          <td class="MATERIAL_TYPE_ID"></td>
+          <td class="LENGTH_ID"></td>
+          <td class="GIRTH_ID"></td>
+          <td class="LOT_TYPE"></td>
+          <td class="GRADE"></td>
+          <td class="QUANTITY"></td>
+          <td class="WDR_CNT"></td>
+          <td class="PLOT_NO"></td>
+          <td class="SCHEME_ID"></td>
+          <td class="MAT_ID" style="display: none;"></td>
+      </tr>
+    </template>
+</div>
+

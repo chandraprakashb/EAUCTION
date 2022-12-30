@@ -1,15 +1,729 @@
-<div class="auctionapproved-page">
+<!-- <script>
 
-    <div class="row header" style="width:100%">
-        <div class="col-5 m-auto">
-          <h4 class="text-center">
-            <span class="heading"><strong>Lot Entry</strong></span>
-            <span class="icon">
-              <i class="fa-solid fa-file-lines"></i>
-            </span>
-          </h4>
-          <hr>
+    var api = 'http://78.47.157.146:8080/lotmanage/api/mngLotRegData';
+
+    var app          = document.getElementById('lot-entry-app');
+    var appLoad      = app.querySelector('#app-loader');
+   
+    functionInitializer(()=>{
+        // $(appLoad).load('pages/lot-screens/'+localStorage.getItem('comodityName')+`.html`)
+        $(appLoad).load('pages/lot-screens/Timber.html')
+    });
+
+
+
+</script>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4>Lot Entry</h4>
+        <hr>
+    </div>
+</div> 
+
+<div id="lot-entry-app" class="mt-3 ">
+    <div id="app-loader">
+
+    </div>
+</div> -->
+
+<script>
+
+  function LotEntry(){
+
+      this.manageBasicSetup = ()=>{
+
+          var addLotSection    = document.getElementById('add-lot-section');
+          var updateLotSection = document.getElementById('update-lot-section');
+
+          FadeOut(updateLotSection)
+
+          $('#show-search-btn').click(()=>{
+              FadeOut(addLotSection);
+              FadeIn(updateLotSection);
+          });
+
+          $('#back-btn').click(()=>{
+              FadeIn(addLotSection);
+              FadeOut(updateLotSection);
+          });
+
+          this.getCommodity().then(()=>{
+              this.renderAddLotTable();
+              this.renderSearchForm();
+              this.manageSearchLots();
+
+              this.renderEditLotTables();
+              this.renderUploadImagesTables();
+          });
+          
+          this.manageAddRenoveLot();
+
+        //   document.querySelector('#show-search-btn').click()
+
+      }
+
+      this.getCommodity = async ()=>{
+          var reqData = new FormData();
+              reqData.append('act', 'getCommodities')
+          var resp = await sendHttpRequest('eaucnmanage/clintsettings', reqData)
+          this.commodityData = JSON.parse(resp.Records.find(comid=> comid.CMDTYID === parseInt(localStorage.getItem('comodityId'))).CMDT_INFO)
+          
+      }
+    
+      this.renderAddLotTable = ()=>{
+          $("#add-lot-section table thead").append(this.renderTableHead('add-lot'));
+          $("#add-lot-section table tbody").append(this.renderTableRows('add-lot'));
+      }
+      
+      this.manageAddRenoveLot = ()=>{
+          var addLotBtn = document.querySelector('#add-btn');
+          var removeLotBtn = document.querySelector('#remove-btn');
+          var tableBody = document.querySelector('table tbody');
+          var saveBtn = document.getElementById('save-lots');
+
+          tableBody.addEventListener('dblclick',(event)=>{
+              var tbrow = event.target.closest('tr');
+              
+              tbrow.classList.toggle('delete-row')     
+
+              checkForRemove();
+
+          })
+          
+          const addLot = ()=>{
+              var data =  this.renderTableRows('add-lot');
+              tableBody.append(data)
+          }
+
+          const remvoeLot = ()=>{
+              document.querySelectorAll('.delete-row').forEach(deleteRow=>deleteRow.remove())
+              checkForRemove()
+          }
+
+          const checkForRemove = ()=>{
+              if(document.querySelectorAll('.delete-row').length === 0){
+                  removeLotBtn.disabled = true;
+              }else{
+                  removeLotBtn.disabled = false;
+              }
+          }
+
+          addLotBtn.addEventListener('click',addLot);
+          removeLotBtn.addEventListener('click',remvoeLot);
+          saveBtn.addEventListener('click',this.sendAddLotRequest)
+      }
+
+      this.sendAddLotRequest = async ()=>{
+          var reqdata = new FormData();
+          var lotsData = [];
+          var lotsTableBody = document.querySelector('table tbody');
+          var lotRows = lotsTableBody.querySelectorAll('tr');
+
+              lotRows.forEach(lotrow=>{
+                  let lotdata = {};
+
+                  lotrow.querySelectorAll('input').forEach(input=>{
+                      lotdata[input.dataset.keyname] = input.value;
+                  })
+
+                  lotrow.querySelectorAll('select').forEach(input=>{
+                      lotdata[input.dataset.keyname] = input.value;
+                  })
+
+                      lotdata.IMG_UPLD = 'N';
+                      
+                      lotsData.push(lotdata)
+              })
+
+              reqdata.append('ACT','save');
+              reqdata.append('INFO',JSON.stringify(lotsData));
+          await sendHttpRequest('lotmanage/api/mngLotRegData',reqdata)
+      }
+
+      this.renderSearchForm = () =>{
+          var dynamicSearchFields = document.getElementById('dynamic-search-fields');
+          
+              this.commodityData.searchable.forEach(data=>{
+                  dynamicSearchFields.insertAdjacentHTML('afterbegin',`
+                    <div class="col-3 search-input-wrapper">
+                      ${this.renderInputs(this.commodityData.components.find(comp=>comp.inputName === data),true)}
+                    </div>`)
+              })
+
+              // dynamicSearchFields.querySelectorAll('input').forEach(input=>input.classList.add(''));
+              // dynamicSearchFields.querySelectorAll('select').forEach(select=>select.classList.add(''));
+      }
+
+      this.manageSearchLots  = ()=>{
+          var searchFor           = document.getElementById('search-reason');
+          var img_upldOrNot       = document.getElementById('img_upldOrNot');
+          var updateLotsTable     = document.getElementById('update-lots-table');
+          var updateImageTable    = document.getElementById('update-image-table');
+
+          addFormValidations('search-form',this.sendSearchRequest.bind(null,searchFor));
+
+          FadeOut(img_upldOrNot,updateLotsTable,updateImageTable);
+          searchFor.addEventListener('change',()=>{
+              if(searchFor.value === 'upload'){
+                  FadeIn(img_upldOrNot,updateImageTable)
+                  FadeOut(updateLotsTable)
+              }else{
+                  FadeOut(img_upldOrNot,updateImageTable)
+                  FadeIn(updateLotsTable)
+              }
+          })
+
+      }
+      
+      this.sendSearchRequest = async(searchReason)=>{
+          var reqdata = new FormData();
+          var infoData = formdataToObject(new FormData($('#search-form')[0]),true);
+          var searchResult;
+
+          reqdata.append('ACT','srch');
+          reqdata.append('INFO',JSON.stringify(infoData));
+          searchResult = await sendHttpRequest('lotmanage/api/mngLotRegData',reqdata);
+          console.log(searchResult.Records);
+          searchResult.Records.map((data)=>{
+              for(var keys in data){
+                 var key = (keys.replaceAll('_', '.')).toLowerCase();
+
+                 data[key] = data[keys];
+                 delete data[keys]
+              }
+          })
+  
+          this.printSearchData(searchReason.value,searchResult.Records)
+      }
+
+      this.printSearchData  = (reason,searchData)=>{
+          var editLotTableBody     = document.querySelector("#update-lots-table table tbody");
+          var uploadImageTableBody = document.querySelector("#update-image-table table tbody");
+
+          editLotTableBody.innerHTML    = '';
+          uploadImageTableBody.innerHTML= '';
+
+          switch(reason){
+              case 'edit':
+                  searchData.forEach(data=> {
+                      var tableRow = this.renderTableRows('update-lot');
+                      var inputAndSelect = [...tableRow.querySelectorAll('input'),...tableRow.querySelectorAll('select')]
+                      
+                      for(var datakey in data){
+                          var datakeyInput = inputAndSelect.find(input=>input.dataset.keyname === datakey);
+
+                              if(datakeyInput){
+                                  datakeyInput.value = data[datakey];
+                              }
+                      }
+
+                      editLotTableBody.append(tableRow);
+                  })
+                  break;
+              case 'upload':
+                  searchData.forEach(data=> {
+                      var tableRow = this.renderTableRows('upload-images');
+                      var textSpans = Array.from(tableRow.querySelectorAll('span')); 
+                      console.log(textSpans);
+                      for(var datakey in data){
+                          var datakeySpan = textSpans.find(span=>span.dataset.keyname === datakey);
+
+                          if(datakeySpan){
+                              datakeySpan.textContent = data[datakey];
+                          }
+                      }
+                      if(data['img.upld'] === 'N'){
+                        tableRow.classList.add('img-upload-no');
+                      }else{
+                        tableRow.classList.add('img-upload-yes');
+                      }
+                      uploadImageTableBody.append(tableRow);
+                  })
+                  break;
+          }
+      }
+
+      this.renderEditLotTables = ()=>{
+          // For Edit Lots
+          var editLotWrapper   = document.getElementById('update-lots-table');
+          var updateBtn = editLotWrapper.querySelector("#update-lot");
+          var deleteBtn = editLotWrapper.querySelector("#delete-lot");
+              updateBtn.addEventListener('click',this.sendUpdateLotRequest.bind(null,'edit'));
+              deleteBtn.addEventListener('click',this.sendUpdateLotRequest.bind(null,'delete'));
+              editLotWrapper.querySelector('table thead').append(this.renderTableHead('update-lot'));
+      }
+
+      this.renderUploadImagesTables = ()=>{
+          var uploadImageTable   = document.getElementById('update-image-table');
+
+          uploadImageTable.querySelector('table thead').append(this.renderTableHead('upload-image'))
+      } 
+
+      this.manageEditedData = (onlyMatId = false)=>{
+          var editedRows = document.querySelectorAll('#update-lots-table table tbody .edited-row');
+          var data = [];
+
+          if(onlyMatId === false){
+              editedRows.forEach(editrow=>{
+                  var editedInputs = editrow.querySelectorAll('.edited');
+                  var editedData = {};
+                  var matInput = editrow.querySelector('.mat_id');
+                      // Get MAT ID
+                      editedData.MAT_ID = matInput.value; 
+
+                      editedInputs.forEach(editedInput=>{
+                          editedData[editedInput.dataset.keyname] = editedInput.value
+                          if(editedInput.tagName === 'SELECT') {
+                              var attachedInput = editedInput.nextElementSibling;
+                              editedData[attachedInput.dataset.keyname] =  attachedInput.value;
+                          }
+                      })
+
+
+                  data.push(editedData)
+              })
+          }
+          else{
+              editedRows.forEach(editrow=>{
+                  var matInput = editrow.querySelector('.mat_id');
+                  data.push(matInput.value);
+              })
+          }
+
+          console.log(data);
+
+          return data;
+          
+      }
+
+      this.sendUpdateLotRequest = async (requestType = 'edit')=>{
+          var requestData = new FormData();
+
+              switch(requestType){
+                  case 'edit':
+                      var INFO = this.manageEditedData();
+
+                      if(INFO.length === 0){
+                          alert("Please Edit Data To Update Lot !");
+                          return;
+                      }
+
+                      requestData.append('ACT','updt');
+                      requestData.append('INFO',JSON.stringify(INFO));
+                      await sendHttpRequest('lotmanage/api/mngLotRegData',requestData)
+                      break;
+                  case 'delete':
+                      var INFO = this.manageEditedData(true);
+
+                      if(INFO.length === 0){
+                          alert("Please Check Any checkbox For do these action !");
+                          return;
+                      }
+                      requestData.append('ACT','del');
+                      requestData.append('INFO',JSON.stringify(INFO));
+                      await sendHttpRequest('lotmanage/api/mngLotRegData',requestData)
+                      break;
+              }
+
+      }
+
+      this.sendUploadImageRequest = ()=>{
+
+      }
+
+      // Utility Methods
+      this.renderTableHead = (reason) =>{
+          var tableRow = document.createElement('tr');
+                console.log("this.commodityData.components",this.commodityData.components);
+              this.commodityData.components.forEach(component=>{
+                  tableRow.innerHTML+=`<th>${component.label}</th>`;
+              })
+
+          switch(reason){
+              case 'add-lot':
+                  break;
+              case 'update-lot':
+                  tableRow.insertAdjacentHTML('afterbegin',`<th><input class="check-all" type="checkbox" id="checkall"></div></th>`)
+                  var checkAllInput = tableRow.querySelector('.check-all');
+
+                  checkAllInput.addEventListener('click',()=>{
+                      var checkRowInputs = document.querySelectorAll('.check-row');
+                      var mainEditInputs = document.querySelectorAll('.main-input');
+
+                      if(checkAllInput.checked){
+                          checkRowInputs.forEach(checkinput=>{
+                              checkinput.checked = true
+                              checkinput.closest('tr').classList.add('edited-row')
+                          });
+                      }else{
+                          checkRowInputs.forEach(checkinput=>{
+                              checkinput.checked = false
+                              checkinput.closest('tr').classList.remove('edited-row')
+                          });
+                          mainEditInputs.forEach(input=>input.classList.remove('edited'))
+                      }
+                  })
+
+                  break;
+              case 'upload-image':
+                  break;
+          }
+
+          return tableRow;
+      }
+
+      this.renderTableRows = (reason)=>{
+          var tableRow = document.createElement('tr');
+
+          switch(reason){
+              case 'add-lot':
+                  this.commodityData.components.forEach(component=>{
+                      tableRow.innerHTML +=`<td>${this.renderInputs(component)}</td>`;
+                  })
+
+                  // Add Onchange Event Listener On All Select Fields
+                  tableRow.querySelectorAll('select').forEach(select=>{
+                      select.addEventListener('change',()=>{
+                          var selectedOption = select.options[select.selectedIndex];
+
+                          select.nextElementSibling.value = selectedOption.text;
+                          console.log(select.nextElementSibling);
+                      })
+
+                  })
+                  break;
+              case 'update-lot':
+                  this.commodityData.components.forEach(component=>{
+                      tableRow.innerHTML +=`<td>${this.renderInputs(component)}</td>`;
+                  })
+                  // Mat ID
+                  tableRow.insertAdjacentHTML('afterbegin','<input type="hidden" data-keyname="mat.id" class="mat_id">')
+                  // Check
+                  tableRow.insertAdjacentHTML('afterbegin',`<th style="background-color:white;width:8px !important;"><div class=""><input class="check-row" type="checkbox" value="" id="flexCheckChecked"><label class="form-check-label" for="flexCheckChecked"></label></div></th>`);
+
+                  var chekRow = tableRow.querySelector('.check-row');
+                  var rowInputs = tableRow.querySelectorAll('.main-input');
+
+                      chekRow.addEventListener('change',()=>{
+                          if(chekRow.checked === false){
+                              rowInputs.forEach(rowinput => rowinput.classList.remove('edited'))
+                              chekRow.closest('tr').classList.remove('edited-row')
+                          }else{
+                              chekRow.closest('tr').classList.add('edited-row')
+                          };
+                      })
+
+                      rowInputs.forEach(rowinput=>{
+
+                          rowinput.addEventListener('keypress',()=>{
+                              rowinput.classList.add('edited')
+                              rowinput.closest('tr').classList.add('edited-row')
+                              chekRow.checked = true;
+                          })
+
+                          rowinput.addEventListener('change',()=>{
+                              rowinput.classList.add('edited')
+                              rowinput.closest('tr').classList.add('edited-row')
+                              chekRow.checked = true;
+                          })
+
+                      })
+
+                      // Add Onchange Event Listener On All Select Fields
+                      tableRow.querySelectorAll('select').forEach(select=>{
+                          select.addEventListener('change',()=>{
+                              var selectedOption = select.options[select.selectedIndex];
+
+                              select.nextElementSibling.value = selectedOption.text;
+                              console.log(select.nextElementSibling);
+                          })
+
+                      })
+                  break;
+              case 'upload-images':
+                  this.commodityData.components.forEach(component=>{
+                      if(component.attachedColumn){
+                          tableRow.innerHTML +=`<td><span data-keyname="${component.attachedColumn}"></span></td>`;
+                      }else{
+                          tableRow.innerHTML +=`<td><span data-keyname="${component.inputName}"></span></td>`;
+                      }
+                  })
+                  break;
+          }
+
+          return tableRow;
+      }
+
+      this.renderInputs = (inputdata,withlabel = false) =>{
+          switch(inputdata.type){
+
+              case 'text':
+                  var text = `<input type="text" class="main-input" data-keyname="${inputdata.inputName}" id="${inputdata.id}">`;
+                  if(withlabel){
+                      text = `<label for="${inputdata.id}">${inputdata.label}:</label> ${text}`;
+                  }
+                  return text;
+                  break;
+
+              case 'number':
+                  var number = `<input type="number" class="main-input" data-keyname="${inputdata.inputName}" id="${inputdata.id}">`;
+                  if(withlabel){
+                      number = `<label for="${inputdata.id}">${inputdata.label}:</label>${number}`;
+                  }
+                  return number;
+                  break;
+
+              case 'select':
+                  var options='<option value="none">select</option>';
+
+                  this.commodityData.dataprovider[inputdata.provider].forEach(pr=>{
+                      options+=`<option value="${pr.value}">${pr.text}</option>`;
+                  })
+
+                  var select = `<select class="main-input" data-keyname="${inputdata.inputName}" data-provider="${inputdata.provider}">${options}</select>
+                      <input type="hidden" class="" data-keyname="${inputdata.attachedColumn}">`;
+
+
+                  if(withlabel){
+                      select = `<label for="${inputdata.id}">${inputdata.label}:</label>${select}`;
+                  }
+
+                  return select;
+                  break;
+          }
+
+      }
+
+  }
+
+  function formdataToObject(formData,removeEmtyKey = false){
+    let object = {};
+
+    for(let key of formData.keys()){
+        object[key] = formData.get(key)
+    }
+
+    if(removeEmtyKey){
+        for(let emptyKey in object){
+            if( 
+                object[emptyKey] === '' ||
+                object[emptyKey] === 'none' ||
+                typeof object[emptyKey] === 'object'){
+                    delete object[emptyKey]
+            }
+        }
+    }
+
+    console.log(object);
+
+    return object;
+}
+
+
+  var lotenrty =  new LotEntry(); 
+      lotenrty.manageBasicSetup();
+</script>
+
+<style>
+
+  .table-wrapper{
+      /* background-color: #fff;
+      border-radius: 20px;
+      padding: 5px 5px 1px 5px; */
+  }
+
+  .table-wrapper table{
+      /* border-radius: 20px;
+      width: 100%; */
+  }
+
+
+
+  .table-wrapper thead{
+      /* background-color: #3f6ad8 !important;
+      color: #fff;
+      border-radius: 20px;
+      text-align: center; */
+  }
+
+  .table-wrapper thead th{
+      /* width: 8.333333333333333px;
+      font-size: 12px; */
+      z-index: 1000 !important;
+  }
+
+  .table-wrapper tbody tr td:first-child {
+    background:rgb(162, 162, 255);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .delete-row{
+      background-color: #FF8C8C;
+  }
+
+  .table-wrapper tbody td{
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;      
+      text-align: center;
+  }
+
+  .table-wrapper tbody tr{
+     position: relative;
+  }
+
+  .table-wrapper tbody tr input[type="number"],.table-wrapper tbody tr input[type="text"], .table-wrapper tbody tr select{  
+      border: 1px solid #91aef7;
+      width: 80px;
+      z-index: -100 !important;
+  }
+
+  .table-wrapper tbody tr .edited{
+      border: 3px solid #3f6ad8 !important;
+  }
+
+  .img-upload-no{
+    background-color: rgb(255, 152, 152);
+  }
+  .img-upload-yes{
+    background-color: rgb(131, 255, 127);
+  }
+
+</style>
+
+
+<div class="lot-entry-page">
+
+  <div class="row header" style="width:100%">
+    <div class="col-5 m-auto">
+      <h4 class="text-center">
+        <span class="heading"><strong>Lot Entry</strong></span>
+        <span class="icon">
+          <i class="fa-solid fa-file-lines"></i>
+        </span>
+      </h4>
+      <hr>
+    </div>
+  </div>
+
+  <section id="add-lot-section">
+    <div class="mt-3" style="width: 100%;">
+        <div class="col-12" style="padding-left: 2px;">
+            <button class="custome-icon-btn-primary" id="add-btn">
+              <span class="icon"><i class="fa-solid fa-plus"></i></span>
+              <span class="text">Add Row</span>
+            </button>
+            <button class="custome-icon-btn-primary"  id="remove-btn" disabled>
+              <span class="icon"><i class="fa-solid fa-trash"></i></span>
+              <span class="text">Remove Rows</span>
+            </button>
+            <button class="custome-icon-btn-outline-primary"   id="show-search-btn" >
+              <span class="icon"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></span>
+            </button>
+        </div>
+        <div class="col-12 ">
+            <div class="table-wrapper" style="max-height: 450px !important;">
+                <table class="table table-bordered">
+                  <thead class="text-center"></thead>
+                  <tbody></tbody>
+                </table>
+            </div>
+              <div class="">
+                  <div class="col-12"><hr></div>
+                  <div class="col-12 ">
+                      <p class="text-center">
+                        <button class="custome-icon-btn-primary" id="save-lots">
+                          <span class="icon"><i class="fa-solid fa-file-export"></i></span>
+                          <span class="text">Save Entered Lot/s</span>
+                        </button>
+                      </p>
+                  </div>
+              </div>
         </div>
     </div>
+  </section>
+
+  <section id="update-lot-section">
   
-  </div>
+    <div class="search-form-wrapper">
+        <form id="search-form" class="search-form needs-validation" novalidate>
+            <div class="row"  style="width: 100%;">
+                <div class="col-4 search-input-wrapper">
+                    <label for="search-section">Search For:</label>
+                    <select class="" id="search-reason" required>
+                        <option value="">Please Select Search For</option>
+                        <option value="edit">Edit Lot</option>
+                        <option value="upload">Upload Images</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" id="dynamic-search-fields" style="width: 100%;">
+                <div class="col-3" id="img_upldOrNot">
+                    <label for="img-upload">Status:</label>
+                    <select class="schemes" name="IMG_UPLD">
+                        <option value="" selected>-</option>
+                        <option value="N">Not Uploaded</option>
+                        <option value="Y">Uploaded</option>
+                    </select>
+                </div>
+            </div>
+            <div class="">
+                <div class="col-12 mt-1 text-center">
+                  <hr>
+                    <button class="custome-icon-btn-primary" type="submit">
+                      <span class="icon"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></span>
+                      <span class="text">Search</span>
+                    </button>
+                    <button class="custome-icon-btn-primary" type="reset" id="back-btn">
+                      <span class="icon"><i class="fa-solid fa-left-long"></i></span>
+                      <span class="text">Back</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+  
+    <div class="">
+  
+        <div class="col-12 mt-3" id="update-lots-table">
+            <div class="table-wrapper" style="max-height: 335px;">
+                <table class="table table-bordered">
+                    <thead class="text-center"></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="">
+                <div class="col-12"><hr></div>
+                <div class="col-12 ">
+                    <p class="text-center">
+                      <button class="custome-icon-btn-primary" id="update-lot">
+                        <span class="icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                        <span class="text">Update Lot(s)</span>
+                      </button>
+                      <button class="custome-icon-btn-primary" id="delete-lot">
+                        <span class="icon"><i class="fa-solid fa-trash"></i></span>
+                        <span class="text">Delete Lot(s)</span>
+                      </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+  
+        <div class="col-12 mt-3" id="update-image-table">
+            <div class="table-wrapper">
+                <table class="table table-bordered">
+                    <thead class="text-center"></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+  
+    </div>
+  
+  </section>
+
+</div>
+
+
