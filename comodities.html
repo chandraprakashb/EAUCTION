@@ -40,7 +40,7 @@
             this.loadCommodities =  async ()=> {
                 var reqData = new FormData();
                     reqData.append('act', 'getCommodities')
-                var resp = await sendHttpRequest('clintsettings', reqData)
+                var resp = await sendHttpRequest('eaucnmanage/clintsettings', reqData)
                     console.log(resp.Records);
                     this.renderComodities(resp.Records)
             }
