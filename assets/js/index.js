@@ -6,7 +6,7 @@ function ManageIndexHtml () {
         this.manageHelp();
         this.loadUserLinks();
         this.manageDefaulterStatus();
-        this.pageLoad('runningauction');
+        this.pageLoad('auctionapproved');
         // this.pageLoad('usermnage');
         
     } 
@@ -23,13 +23,108 @@ function ManageIndexHtml () {
 
     // Manage Render User Links
     this.loadUserLinks = async () =>{
-        let screenData = await sendHttpRequest('eaucnmanage/getapps',new FormData());
-        this.renderLinks(screenData.Record);
+        // let screenData = await sendHttpRequest('eaucnmanage/getapps',new FormData());
+        // this.renderLinks(screenData.Record);
+        this.renderLinks(
+            [
+                {
+                    text:"Dashboard",
+                    value:"dashboard",
+                    icon:"gauge"
+                },
+                {
+                    text:"Office",
+                    value:"office",
+                    icon:"building-circle-check"
+                },
+                {
+                    text:"Designation",
+                    value:"designation",
+                    icon:"person-walking-luggage"
+                },
+                {
+                    text:"Setting",
+                    value:"setting",
+                    icon:"gear"
+                },
+                {
+                    text:"Profile",
+                    value:"profile",
+                    icon:"id-badge"
+                },
+                {
+                    text:"Users",
+                    value:"usermnage",
+                    icon:"users"
+                },
+                {
+                    text:"Lot Entry",
+                    value:"lotentry",
+                    icon:"file-lines"
+                },
+                {
+                    text:"Lot Finalize",
+                    value:"lotfinalize",
+                    icon:"check-to-slot"
+                },
+                {
+                    text:"Bidder",
+                    value:"bidder",
+                    icon:"user-tie"
+                },
+                {
+                    text:"Create Auction",
+                    value:"createauction",
+                    icon:"pen-to-square"
+                },
+                {
+                    text:"Auction Approve",
+                    value:"auctionapproved",
+                    icon:"thumbs-up"
+                },
+                {
+                    text:"Upload Upset",
+                    value:"uploadupset",
+                    icon:"arrow-up-from-bracket"
+                },
+                {
+                    text:"Material Dispatch",
+                    value:"dispatch",
+                    icon:"truck-fast"
+                },
+                {
+                    text:"Notice",
+                    value:"notice",
+                    icon:"circle-exclamation"
+                },
+        
+                {
+                    text:"Order/Reciept",
+                    value:"order",
+                    icon:"arrow-down-short-wide"
+                },
+         
+                {
+                    text:"Running Auction",
+                    value:"runningauction",
+                    icon:"chart-line"
+                },
+                
+                {
+                    text:"Auction Plan",
+                    value:"auctionplan",
+                    icon:"tree"
+                }
+        ]
+        )
     }
 
     this.renderLinks = (linkData) =>{
         console.log(linkData);
-        this.linkWrapper = document.querySelector('aside');
+        this.leftSidelinkWrapper = document.querySelector('.aside1');
+        this.rightSidelinkWrapper = document.querySelector('.aside2');
+        this.leftLinks=[]; 
+        this.rightLinks = [];
         if(linkData){
             linkData.forEach(data=>{
                 var linkEls = new ElCreatore({
@@ -51,10 +146,25 @@ function ManageIndexHtml () {
                 linkEls.iconWrapper.innerHTML = `<i class="fa-solid fa-${data.icon}"></i>`;
 
                 ElAppend(linkEls.linkDiv,linkEls.textWrapper,linkEls.iconWrapper);
-                ElAppend(this.linkWrapper,linkEls.linkDiv)
+
+                if(this.leftLinks.length !== 12) this.leftLinks.push(linkEls.linkDiv);
+                else  this.rightLinks.push(linkEls.linkDiv)
+                
+                // ElAppend(this.leftSidelinkWrapper,linkEls.linkDiv)
             })
         }
 
+        if(this.leftLinks.length){
+            this.leftLinks.forEach((link) => this.leftSidelinkWrapper.append(link));
+            if(this.rightLinks.length)
+            this.rightLinks.forEach((link) => this.rightSidelinkWrapper.append(link));
+        }
+
+        
+        
+
+        console.log("this.leftLinks",this.leftLinks);
+        console.log("this.rightLinks",this.rightLinks);
         
     }
     // End Manage Render User Link

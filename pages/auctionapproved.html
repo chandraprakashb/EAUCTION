@@ -48,12 +48,18 @@
           })
           hideSearch.addEventListener('click',()=> {
               FadeOut(this.searchSection);
-              FadeIn(showSearch)
+              FadeIn(showSearch);
+              setTimeout(()=>{
+                $(".auction-approve-table").css("max-height", "395px")
+              },700)
           })
 
           showSearch.addEventListener('click',()=> {
               FadeOut(showSearch);
-              FadeIn(this.searchSection)
+              FadeIn(this.searchSection);
+              setTimeout(()=>{
+                $(".auction-approve-table").css("max-height", "282px")
+              },700)
           })
 
           addFormValidations('search-lots-form',this.searchData);
@@ -181,155 +187,109 @@
     </div>
 
     <section id="search-section" >
-      <form class="needs-validation mb-2" id="search-lots-form" novalidate>
-          <div class="row">
-  
-              <div class="col-12">
-                  
-                  <div class="row">
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Office Name:</div>
-                              <div class="col-6">
-                                  <select name="ofc.nm" id="ofcnm" required>
-                                      <option value="">Select</option>
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">e-Auction Number:</div>
-                              <div class="col-6">
-                                  <input type="number" name="eauction.no" id="eauction_no">
-                                  <span id="eauction_dash">-</span>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Start Date:</div>
-                              <div class="col-6">
-                                  <input type="date" name="start.date" id="start_date">
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">End Date:</div>
-                              <div class="col-6">
-                                  <input type="date" name="end.date" id="end_date">
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <div class="row mt-3">
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Auctioning Lots Detail:</div>
-                              <div class="col-6">
-                                  <select name="auctioning.log.detail" id="auctioning-log-detail">
-                                      <option value="b" selected>Batch</option>
-                                      <option value="l">lots</option>
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Action Status:</div>
-                              <div class="col-6">
-                                  <select name="action.status" id="action-status">
-                                      <option value="c" selected>Created Not Approved Published</option>
-                                      <option value="a">All</option>
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <div class="row mt-2 lot-info-inputs">
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Sub Office Name:</div>
-                              <div class="col-6">
-                                  <select class="" name="sub.Office.name" id="sub-Office-name">
-                                      <option value="">Select</option>
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Lot No.:</div>
-                              <div class="col-6">
-                                  <input type="text" class="" name="lot.no.to" id="lot-no-to" placeholder="i.e. 101,102,103">
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Material Type:</div>
-                              <div class="col-6">
-                                  <select class="" name="material-type" id="material-type">
-                                      <option value="">Select</option>
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Material Status:</div>
-                              <div class="col-6">
-                                  <select class="" name="material.status" id="material-status">
-                                      <option value="">Select</option>
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3 col-6">
-                          <div class="row">
-                              <div class="col-6 text-right labels">Species:</div>
-                              <div class="col-6">
-                                  <select class="" name="species" id="species">
-                                      <option value="">Select</option>
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-  
-              </div>
+      <form class="needs-validation mb-2 search-form" id="search-lots-form" novalidate>
+          <div class="row"  style="width:100%">
+            <div class="col-3 search-input-wrapper">
+                <label for="">Office Name:</label>
+                <select name="ofc.nm" id="ofcnm" required>
+                    <option value="">Select</option>
+                </select>
+            </div>
+            <div class="col-3 search-input-wrapper">
+                <label for="">e-Auction No.:</label>
+                <input type="number" name="eauction.no" id="eauction_no">
+                <span id="eauction_dash">-</span>
+            </div>
+            <div class="col-3 search-input-wrapper">
+                <label for="">Start Date:</label>
+                <input type="date" name="start.date" id="start_date">
+            </div>
+            <div class="col-3 search-input-wrapper">
+                <label for="">End Date:</label>
+                <input type="date" name="end.date" id="end_date">
+            </div>
+            <div class="col-3 search-input-wrapper">
+                <label for="">Auctioning Lots Detail:</label>
+                <select name="auctioning.log.detail" id="auctioning-log-detail">
+                    <option value="b" selected>Batch</option>
+                    <option value="l">lots</option>
+                </select>
+            </div>
+            <div class="col-4 search-input-wrapper">
+                <label for="">Action Status:</label>
+                <select name="action.status" id="action-status">
+                    <option value="c" selected>Created Not Approved Published</option>
+                    <option value="a">All</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <div class="row lot-info-inputs">
+                    <div class="col-3 search-input-wrapper">
+                        <label for="">Sub Office Name:</label>
+                        <select class="" name="sub.Office.name" id="sub-Office-name">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                    <div class="col-3 search-input-wrapper">
+                        <label for="">Lot No.:</label>
+                        <input type="text" class="" name="lot.no.to" id="lot-no-to" placeholder="i.e. 101,102,103">
+                    </div>
+                    <div class="col-3 search-input-wrapper">
+                        <label for="">Material Type:</label>
+                        <select class="" name="material-type" id="material-type">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                    <div class="col-3 search-input-wrapper">
+                        <label for="">Material Status:</label>
+                        <select class="" name="material.status" id="material-status">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                    <div class="col-3 search-input-wrapper">
+                        <label for="">Species:</label>
+                        <select class="" name="species" id="species">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
           </div>
-          <div class="row">
-              <div class="col-12"><hr></div>
-              <div class="col-5 m-auto text-center">
-                  <button class="btn btn-primary" >Search Data</button>
-                  <span class="btn btn-danger" id="hide-search">Hide Search</span>
-              </div>
+          <div class="row"  style="width:100%">
+            <div class="col-12"><hr></div>
+            <div class="col-5 m-auto text-center">
+                <button class="custome-icon-btn-primary" >
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="text">Search Data</span>
+                </button>
+                <button type="button" class="custome-icon-btn-primary" id="hide-search">
+                   <span class="icon"><i class="fa-solid fa-xmark"></i></span>
+                   <span class="text">Close Search</span>
+                </button>
+            </div>
           </div>
       </form>
-  </section>
+    </section>
   
-  <section class="table-section" >
-      <div class="row">
-          <div class="col-12 text-right">
-              <button class="btn btn-outline-primary">View Auction Schedule</button>
-              <button class="btn btn-primary" id="show-search">Search</button>
-          </div>
-          <div class="col-12 ">
-              <div class="table-wrapper">
-                  <table class="table table-bordered border-primary">
+    <section class="table-section" >
+        <div class=""  style="width:100%">
+            <div class="col-12 text-right mt-2 mb-2">
+              <button class="custome-icon-btn-primary">
+                <span class="icon"><i class="fa-solid fa-eye"></i></span>
+                <span class="text">View Auction Schedule</span>
+              </button>
+              <button class="custome-icon-btn-outline-primary" id="show-search">
+                <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <!-- <span class="text">Search</span> -->
+              </button>
+            </div>
+            <div class="col-12 ">
+              <div class="table-wrapper auction-approve-table" style="max-height: 282px;">
+                  <table class="table table-bordered">
                       <thead>
                           <tr>
-                              <th>
-                                  <div class="form-check">
-                                      <input class="form-check-input check-all" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-      
-                                      </label>
-                                  </div>
+                              <th> 
+                                <input class="check-all" type="checkbox" value="" id="flexCheckDefault">
                               </th>
                               <th>Batch No.</th>
                               <th>Sub Office</th>
@@ -348,11 +308,7 @@
                       <tbody> 
                           <tr class="text-center">
                               <td>
-                                  <div class="form-check ">
-                                      <input class="form-check-input check-row" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-                                      </label>
-                                  </div>                                          
+                                <input class="check-row" type="checkbox" value="" id="flexCheckDefault"> 
                               </td>
                               <td>01</td>
                               <td>Gondia</td>
@@ -370,7 +326,7 @@
                                   <span class="icon delete-btn"><i class="metismenu-icon pe-7s-trash"></i></span>
                               </td>
                           </tr>
-                          <tr class="info-row info-hide">
+                          <!-- <tr class="info-row info-hide">
                               <td colspan="13">
                                   <table class="table table-bordered border-primary">
                                       <thead style="background-color: rgb(236, 240, 251) !important;color:black;">
@@ -466,15 +422,11 @@
                                       </tbody>
                                   </table>
                               </td>
-                          </tr>
+                          </tr> -->
   
                           <tr class="text-center">
                               <td>
-                                  <div class="form-check ">
-                                      <input class="form-check-input check-row" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-                                      </label>
-                                  </div>                                          
+                                <input class="check-row" type="checkbox" value="" id="flexCheckDefault"> 
                               </td>
                               <td>02</td>
                               <td>Gondia</td>
@@ -493,7 +445,7 @@
                               </td>
                               
                           </tr>
-                          <tr class="info-row info-hide">
+                          <!-- <tr class="info-row info-hide">
                               <td colspan="13">
                                   <table class="table table-bordered border-primary">
                                       <thead style="background-color: rgb(236, 240, 251) !important;color:black;">
@@ -589,15 +541,11 @@
                                       </tbody>
                                   </table>
                               </td>
-                          </tr>
+                          </tr> -->
   
                           <tr class="text-center">
                               <td>
-                                  <div class="form-check ">
-                                      <input class="form-check-input check-row" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-                                      </label>
-                                  </div>                                          
+                                <input class="check-row" type="checkbox" value="" id="flexCheckDefault"> 
                               </td>
                               <td>03</td>
                               <td>Gondia</td>
@@ -616,7 +564,7 @@
                               </td>
                               
                           </tr>
-                          <tr class="info-row info-hide">
+                          <!-- <tr class="info-row info-hide">
                               <td colspan="13">
                                   <table class="table table-bordered border-primary">
                                       <thead style="background-color: rgb(236, 240, 251) !important;color:black;">
@@ -712,15 +660,11 @@
                                       </tbody>
                                   </table>
                               </td>
-                          </tr>
+                          </tr> -->
   
                           <tr class="text-center">
                               <td>
-                                  <div class="form-check ">
-                                      <input class="form-check-input check-row" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-                                      </label>
-                                  </div>                                          
+                                <input class="check-row" type="checkbox" value="" id="flexCheckDefault"> 
                               </td>
                               <td>04</td>
                               <td>Gondia</td>
@@ -739,7 +683,7 @@
                               </td>
                               
                           </tr>
-                          <tr class="info-row info-hide">
+                          <!-- <tr class="info-row info-hide">
                               <td colspan="13">
                                   <table class="table table-bordered border-primary">
                                       <thead style="background-color: rgb(236, 240, 251) !important;color:black;">
@@ -835,15 +779,11 @@
                                       </tbody>
                                   </table>
                               </td>
-                          </tr>
+                          </tr> -->
   
                           <tr class="text-center">
                               <td>
-                                  <div class="form-check ">
-                                      <input class="form-check-input check-row" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-                                      </label>
-                                  </div>                                          
+                                <input class="check-row" type="checkbox" value="" id="flexCheckDefault"> 
                               </td>
                               <td>05</td>
                               <td>Gondia</td>
@@ -862,7 +802,7 @@
                               </td>
                               
                           </tr>
-                          <tr class="info-row info-hide">
+                          <!-- <tr class="info-row info-hide">
                               <td colspan="13">
                                   <table class="table table-bordered border-primary">
                                       <thead style="background-color: rgb(236, 240, 251) !important;color:black;">
@@ -958,15 +898,11 @@
                                       </tbody>
                                   </table>
                               </td>
-                          </tr>
+                          </tr> -->
   
                           <tr class="text-center">
                               <td>
-                                  <div class="form-check ">
-                                      <input class="form-check-input check-row" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-                                      </label>
-                                  </div>                                          
+                                <input class="check-row" type="checkbox" value="" id="flexCheckDefault"> 
                               </td>
                               <td>06</td>
                               <td>Gondia</td>
@@ -985,7 +921,7 @@
                               </td>
                               
                           </tr>
-                          <tr class="info-row info-hide">
+                          <!-- <tr class="info-row info-hide">
                               <td colspan="13">
                                   <table class="table table-bordered border-primary">
                                       <thead style="background-color: rgb(236, 240, 251) !important;color:black;">
@@ -1081,15 +1017,11 @@
                                       </tbody>
                                   </table>
                               </td>
-                          </tr>
+                          </tr> -->
   
                           <tr class="text-center">
                               <td>
-                                  <div class="form-check ">
-                                      <input class="form-check-input check-row" type="checkbox" value="" id="flexCheckDefault">
-                                      <label class="form-check-label" for="flexCheckDefault">
-                                      </label>
-                                  </div>                                          
+                                <input class="check-row" type="checkbox" value="" id="flexCheckDefault"> 
                               </td>
                               <td>07</td>
                               <td>Gondia</td>
@@ -1108,7 +1040,7 @@
                               </td>
                               
                           </tr>
-                          <tr class="info-row info-hide">
+                          <!-- <tr class="info-row info-hide">
                               <td colspan="13">
                                   <table class="table table-bordered border-primary">
                                       <thead style="background-color: rgb(236, 240, 251) !important;color:black;">
@@ -1204,174 +1136,178 @@
                                       </tbody>
                                   </table>
                               </td>
-                          </tr>
+                          </tr> -->
                       </tbody>
                   </table>
               </div>
-          </div>
-          <div class="col-12 mt-3">
-              <div class="card">
-                  <div class="card-body">
-                      <p class="text-center">
-                          <button class="btn btn-primary btn-lg approve-view-list">Approve & View List</button>
-                          <button class="btn btn-outline-danger btn-lg initiate-request-btn">Initiate Request Of Delete Auction</button>
-                          <button class="btn btn-outline-success btn-lg">Export Batches</button>
-                      </p>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
+            </div>
+            <div class="col-12 mt-2">
+                <p class="text-center">
+                    <button class="custome-icon-btn-primary approve-view-list">
+                        <span class="icon"><i class="fa-solid fa-thumbs-up"></i></span>
+                        <span class="text">Approve & View List</span>
+                    </button>
+                    <button class="custome-icon-btn-outline-primary  initiate-request-btn">
+                        <span class="icon"><i class="fa-solid fa-trash"></i></span>
+                        <span class="text">Initiate Request Of Delete Auction</span>
+                    </button>
+                    <button class="custome-icon-btn-primary  ">
+                        <span class="icon"><i class="fa-sharp fa-solid fa-file-export"></i></span>
+                        <span class="text">Export Batches</span>
+                    </button>
+                </p>
+            </div>
+        </div>
+    </section>
   
-  <section class="back-wrapper text-right">
-      <button class="btn btn-outline-danger">Back</button>
-  </section>
+    <section class="back-wrapper text-right">
+        <button class="btn btn-outline-danger">Back</button>
+    </section>
   
-  <section class="approve-and-viewlist-section">
-      <div class="card">
-          <div class="card-body">
-              <h4 class="text-center">Authorization Details Of Batches Approved</h4>
-              <hr>
-              <p><strong class="text-primary">Office Name: </strong> CHANDRAPRAKASH RAMESH BAGDE.</p>
-              <div style="height: 260px;width:100%;background-color:#f7f7f7;"></div>
-              <div class="form-check mt-4">
-                  <input class="form-check-input check-all" type="checkbox" value="" id="agree">
-                  <label class="form-check-label" for="agree">
-                      I Agree to all information is corrected as per personal obesarvations & I ready decleared the auction schedules
-                  </label>
-              </div>
-              <div class="text-center mt-2">
-                  <button class="btn btn-primary btn-lg submit-publish-btn">Submit And Publish</button>
-              </div>
-          </div>
-      </div>
-  </section>
+    <section class="approve-and-viewlist-section">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Authorization Details Of Batches Approved</h4>
+                <hr>
+                <p><strong class="text-primary">Office Name: </strong> CHANDRAPRAKASH RAMESH BAGDE.</p>
+                <div style="height: 260px;width:100%;background-color:#f7f7f7;"></div>
+                <div class="form-check mt-4">
+                    <input class="form-check-input check-all" type="checkbox" value="" id="agree">
+                    <label class="form-check-label" for="agree">
+                        I Agree to all information is corrected as per personal obesarvations & I ready decleared the auction schedules
+                    </label>
+                </div>
+                <div class="text-center mt-2">
+                    <button class="btn btn-primary btn-lg submit-publish-btn">Submit And Publish</button>
+                </div>
+            </div>
+        </div>
+    </section>
   
-  <section class="initiate-request-section">
-      <div class="row">
-          <div class="col-6 m-auto">
-              <h3 class="text-center bg-white pt-2 pb-2">Published Auction Details</h3>
-              <hr>
-          </div>
-      </div>
-      <div class="table-wrapper">
-          <form>
-              <table class="table table-bordered border-primary">
-                  <thead>
-                      <tr>
-                          <th>&nbsp;</th>
-                          <th>Auction Authority Office</th>
-                          <th>Lot List</th>
-                          <th>Auction Start Date</th>
-                          <th>Auction End Date</th>
-                          <th>Sub Office Name</th>
-                          <th>Total Lots</th>
-                          <th>Auction Publish Date</th>
-                          <th>Delete Status</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-  
-                      <tr class="text-center">
-                          <td rowspan="2">
-                              <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="actradio" id="radio1" disabled>
-                                  <label class="form-check-label" for="radio1">
-  
-                                  </label>
-                              </div>
-                          </td>
-                          <td rowspan="2">Office 0</td>
-                          <td rowspan="2"><span class="btn btn-outline-primary">Download</button></td>
-                          <td rowspan="2">29-08-2022</td>
-                          <td rowspan="2">05-09-2022</td>
-                          <td>Sub Office 1</td>
-                          <td>20</td>
-                          <td rowspan="2">29-08-2022 14:05</td>
-                          <td rowspan="2"><span class="text-danger"><strong>Deleted</strong></span></td>
-                      </tr>
-                      <tr class="text-center">
-                          <td>Sub Office 2</td>
-                          <td>20</td>
-                      </tr>
-  
-                      <tr class="text-center">
-                          <td rowspan="2">
-                              <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="actradio" id="radio1" >
-                                  <label class="form-check-label" for="radio1">
-  
-                                  </label>
-                              </div>
-                          </td>
-                          <td rowspan="2">Office 1</td>
-                          <td rowspan="2"><span class="btn btn-outline-primary">Download</button></td>
-                          <td rowspan="2">29-08-2022</td>
-                          <td rowspan="2">05-09-2022</td>
-                          <td>Sub Office 1</td>
-                          <td>20</td>
-                          <td rowspan="2">29-08-2022 14:05</td>
-                          <td rowspan="2"><span><strong>Requested</strong></span></td>
-                      </tr>
-                      <tr class="text-center">
-                          <td>Sub Office 2</td>
-                          <td>20</td>
-                      </tr>
-  
-                      <tr class="text-center">
-                          <td rowspan="4">
-                              <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="actradio" id="radio1" >
-                                  <label class="form-check-label" for="radio1">
-  
-                                  </label>
-                              </div>
-                          </td>
-                          <td rowspan="4">Office 2</td>
-                          <td rowspan="4"><span class="btn btn-outline-primary">Download</button></td>
-                          <td rowspan="4">29-08-2022</td>
-                          <td rowspan="4">05-09-2022</td>
-                          <td>Sub Office 1</td>
-                          <td>20</td>
-                          <td rowspan="4">29-08-2022 14:05</td>
-                          <td rowspan="4"><span><strong>Requested</strong></span></td>
-                      </tr>
-                      <tr class="text-center">
-                          <td>Sub Office 2</td>
-                          <td>20</td>
-                      </tr>
-                      <tr class="text-center">
-                          <td>Sub Office 3</td>
-                          <td>20</td>
-                      </tr>
-  
-  
-                  </tbody>
-              </table>
-          </form>
-      </div>
-  
-      <div class="row">
-          <div class="col-6 m-auto">
-              <div class=" card mt-4">
-                  <div class="card-body">
-                      <form >
-                          <div class="mb-3">
-                              <label for="file-input">Upload Document</label>
-                              <input type="file" required class="form-control" id="file-input">
-                          </div>
-                          <div class="mb-3">
-                              <label for="remark">Remark</label>
-                              <textarea class="form-control" id="remark" cols="30" rows="5"></textarea>
-                          </div>
-                         <div class="text-center">
-                              <button class="btn btn-primary">Intimate ASP</button>
-                         </div>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
+    <section class="initiate-request-section">
+        <div class="row"  style="width:100%">
+            <div class="col-6 m-auto">
+                <h3 class="text-center bg-white pt-2 pb-2">Published Auction Details</h3>
+                <hr>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <form>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Auction Authority Office</th>
+                            <th>Lot List</th>
+                            <th>Auction Start Date</th>
+                            <th>Auction End Date</th>
+                            <th>Sub Office Name</th>
+                            <th>Total Lots</th>
+                            <th>Auction Publish Date</th>
+                            <th>Delete Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                        <tr class="text-center">
+                            <td rowspan="2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="actradio" id="radio1" disabled>
+                                    <label class="form-check-label" for="radio1">
+    
+                                    </label>
+                                </div>
+                            </td>
+                            <td rowspan="2">Office 0</td>
+                            <td rowspan="2"><span class="btn btn-outline-primary">Download</button></td>
+                            <td rowspan="2">29-08-2022</td>
+                            <td rowspan="2">05-09-2022</td>
+                            <td>Sub Office 1</td>
+                            <td>20</td>
+                            <td rowspan="2">29-08-2022 14:05</td>
+                            <td rowspan="2"><span class="text-danger"><strong>Deleted</strong></span></td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>Sub Office 2</td>
+                            <td>20</td>
+                        </tr>
+    
+                        <tr class="text-center">
+                            <td rowspan="2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="actradio" id="radio1" >
+                                    <label class="form-check-label" for="radio1">
+    
+                                    </label>
+                                </div>
+                            </td>
+                            <td rowspan="2">Office 1</td>
+                            <td rowspan="2"><span class="btn btn-outline-primary">Download</button></td>
+                            <td rowspan="2">29-08-2022</td>
+                            <td rowspan="2">05-09-2022</td>
+                            <td>Sub Office 1</td>
+                            <td>20</td>
+                            <td rowspan="2">29-08-2022 14:05</td>
+                            <td rowspan="2"><span><strong>Requested</strong></span></td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>Sub Office 2</td>
+                            <td>20</td>
+                        </tr>
+    
+                        <tr class="text-center">
+                            <td rowspan="4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="actradio" id="radio1" >
+                                    <label class="form-check-label" for="radio1">
+    
+                                    </label>
+                                </div>
+                            </td>
+                            <td rowspan="4">Office 2</td>
+                            <td rowspan="4"><span class="btn btn-outline-primary">Download</button></td>
+                            <td rowspan="4">29-08-2022</td>
+                            <td rowspan="4">05-09-2022</td>
+                            <td>Sub Office 1</td>
+                            <td>20</td>
+                            <td rowspan="4">29-08-2022 14:05</td>
+                            <td rowspan="4"><span><strong>Requested</strong></span></td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>Sub Office 2</td>
+                            <td>20</td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>Sub Office 3</td>
+                            <td>20</td>
+                        </tr>
+    
+    
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <div class="row"  style="width:100%">
+            <div class="col-6 m-auto">
+                <div class=" card mt-4">
+                    <div class="card-body">
+                        <form >
+                            <div class="mb-3">
+                                <label for="file-input">Upload Document</label>
+                                <input type="file" required class="form-control" id="file-input">
+                            </div>
+                            <div class="mb-3">
+                                <label for="remark">Remark</label>
+                                <textarea class="form-control" id="remark" cols="30" rows="5"></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary">Intimate ASP</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>

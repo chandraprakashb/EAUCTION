@@ -10,9 +10,10 @@
     --light_blue:#c7d5f9;
 
     --table-background:#ffffff;
-    --thead_background:#3067f1e0;
+    /* --thead_background:#3067f1e0; */
+    --thead_background:#6b95ffe0;
     --table_border: #91acf1e0;
-    --thead_text:#fffefe;
+    --thead_text:#000000;
 
     --number_color:#002480;
 

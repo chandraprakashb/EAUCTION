@@ -284,7 +284,7 @@ aside{
     position: fixed;
     top: 22%;
     left: 0;
-    background-color: transparent !important;
+    /* background-color: transparent !important; */
     z-index:2;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -292,8 +292,8 @@ aside{
 }
 
 /* width */
-aside::-webkit-scrollbar {
-    width: 3px;
+    aside::-webkit-scrollbar {
+    width: 0px;
   }
   
   /* Track */
@@ -318,9 +318,9 @@ aside::after{
     width: 42px;
     top: 0;
     z-index: -1;
-    -webkit-box-shadow: -2px -8px 63px 1px rgba(26,89,235,1);
+    /* -webkit-box-shadow: -2px -8px 63px 1px rgba(26,89,235,1);
     -moz-box-shadow: -2px -8px 63px 1px rgba(26,89,235,1);
-    box-shadow: -2px -8px 63px 1px rgba(26,89,235,1);
+    box-shadow: -2px -8px 63px 1px rgba(26,89,235,1); */
 }
 
 aside .link{
@@ -329,7 +329,6 @@ aside .link{
     background-color: #012b96;
     position: relative;
     margin-bottom: 1px;
-    margin-left: -173px;
     cursor: pointer !important;
     transition: linear 0.3s;
     -webkit-box-shadow: 0px -1px 26px -7px rgba(63,106,216,1);
@@ -349,9 +348,6 @@ aside .link .text{
 }
 
 aside .icon{
-    position: absolute;
-    top: 0;
-    left: 83.5%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -363,14 +359,63 @@ aside .icon{
     color: var(--light_blue);
 }
 
-aside .link:hover {
+.aside1  .link:hover {
     margin-left: 0px !important;
     cursor: pointer !important;
 }
 
-aside .link:hover aside{
+.aside1   .link:hover .aside1{
     box-shadow: 0px -1px 26px -7px rgba(0,0,0,0.1) !important;
 }
+
+.aside1 .link {
+    margin-left: -173px;
+}
+
+
+.aside1 .icon{
+    position: absolute;
+    top: 0;
+    left: 83.5%;
+}
+
+.aside2{
+    /* width: 200px; */
+    left: 85%;z-index: 0;
+}
+
+.aside2 .link{
+margin-left: 80%;
+}
+
+.aside2  .link .text{
+    transform: translateY(7px) !important;
+    /* transform: translateX(7px) !important; */
+    margin-left: 45px;
+}
+
+.aside2 .icon{
+    top: 0px;
+    position: absolute;
+}
+
+.aside2 .link:hover {
+    margin-left: 10%;
+
+}
+
+.aside2:hover{
+z-index: 2;
+/* background-color: red; */
+}
+
+.aside2:not(:hover) { 
+    background-origin: blue;
+ } 
+
+
+
+
 
 /* End Aside */
 
@@ -443,3 +488,4 @@ aside .link:hover aside{
     font-weight: 600;
     color: var(--blue);
 }
+
